@@ -1,8 +1,8 @@
 # pymap
 
-A program for describing how different selections of degrees of freedom (mappings) affect the amount of information retained about a full data set composed by discrete degrees of freedom.
+A program for describing how different selections of *N* out of *n* degrees of freedom (mappings) affect the amount of information retained about a full data set.
 
-Three quantities are calculated for each coarse-grained mappings, namely the mapping entropy:
+Three quantities are calculated for each low-resolution representation, namely the mapping entropy:
 
 ![equ](https://latex.codecogs.com/gif.latex?S_{map}&space;=&space;\sum_{\phi}p(\phi)&space;\ln\left(\frac{p(\phi)}{\overline{p(\phi)}}&space;\right))
 
@@ -16,15 +16,12 @@ and the relevance:
 
 where K is the set of unique frequencies observed in the sample.
 
-If you use pymap please cite the following publications:
-
+If you use pymap please cite [this paper]().
 
 
 # Setup
 
-A minimal conda environment to run the calculations can be constructed from the .yml file pymap.yml.
-
-If you don't have conda installed, please see [here](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html).
+A minimal conda environment (see [here](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html)) to run the calculations can be generated from the .yml file pymap.yml using the following command:
 
 ```
 conda env create --file pymap.yml
@@ -38,7 +35,7 @@ conda activate pymap
 
 # Usage
 
-The program must be provided with the name of a data set contained in the *data* folder. The second, optional parameter, *max_binom*, that can be given to pymap is the maximum number of mappings that must be generated for each degree of coarse-graining.
+The program must be provided with the name of a data set contained in the *data* folder. The second, optional parameter, *max_binom*, that can be given to pymap is the maximum number of mappings that must be generated for each degree of coarse-graining. The default choice is to generate all the coarse-grained mappings for each *N*, a task that becomes prohibitive when *n > 15*.
 
 ## non-interacting spin system
 
@@ -48,7 +45,7 @@ python3 pymap spins
 
 ## financial market
 
-To obtain the full results of [this paper]() one can run
+To obtain the full results of [this paper]() one can use the following command:
 
 ```
 python3 pymap m1
@@ -60,7 +57,7 @@ and
 python3 pymap m2
 ```
 
-In the latter case, the mapping space starts to be quite big, and it is possible to explore just a portion of it in few minutes using *max_binom*
+In the latter case, the mapping space is already quite big, and *max_binom* allows one to explore just a portion of it in few minutes: 
 
 ```
 python3 pymap m2 5
