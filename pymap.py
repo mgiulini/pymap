@@ -35,7 +35,17 @@ def compute_entropies(at_clust, df,mapping, pr):
         mapping_entropy.append(pr[n]*np.log(pr[n]/new_p_bar.iloc[s,-1]))
     tot_smap = sum(mapping_entropy)
     print("mapping entropy for %s = %8.6lf" % (str(mapping),tot_smap))
-    return hs,hk,tot_smap
+    return mapping,list(at_clust.columns[mapping]),hs,hk,tot_smap
+
+# check input parameters
+if len(sys.argv) < 2:
+    raise Exception("missing input parameter: model name")
+max_binom = 1000000
+if len(sys.argv) > 2:
+    print("read maximum binomial coefficient for mapping generation at intermediate coarse-graining")
+    max_binom = int(sys.argv[2])
+    if max_binom < 1:
+        raise Exception("missing input parameter: model name")
 
 # read_data
 datafile = "./data/" + sys.argv[1] + ".csv"
@@ -62,14 +72,13 @@ print("at_clust.columns[at_mapping]",at_clust.columns[at_mapping])
 print("atomistic resolution ", entropy(at_clust["records"])) # computing fully atomistic resolution
 
 cg_mappings = dict()
-#for ncg in range(1,3):
 for ncg in range(1,n_at+1):
     print("ncg = ", ncg)
     cg_count = int(binom(n_at,ncg))
     print("cg_count", cg_count)
     k = 0
-    #while k < cg_count :
-    for s in range(1):
+    max_range = min(cg_count,max_binom)
+    while k < max_range:
         mapping = np.random.choice(at_mapping, ncg, replace=False)
         mapping.sort()
         print("mapping", mapping)
@@ -79,6 +88,9 @@ for ncg in range(1,n_at+1):
             print("adding key", key, " k = ", k)
             cg_mappings[key] = compute_entropies(at_clust, df, mapping, pr)
 
-print(cg_mappings)
+output_filename = "./results/results_" + sys.argv[1] + ".csv"
+output_df = pd.DataFrame(cg_mappings.values())
+output_df.columns = ["mapping","trans_mapping","hs","hk","smap"]
+output_df.to_csv(output_filename,sep=",",float_format = "%8.6lf")
 
 print("Total execution time (seconds) ", time.time() - start_time)
