@@ -35,7 +35,9 @@ def compute_entropies(at_clust, df,mapping, pr):
         mapping_entropy.append(pr[n]*np.log(pr[n]/new_p_bar.iloc[s,-1]))
     tot_smap = sum(mapping_entropy)
     print("mapping entropy for %s = %8.6lf" % (str(mapping),tot_smap))
-    return mapping,list(at_clust.columns[mapping]),hs,hk,tot_smap
+    delta_s_conf = (len(at_clust.columns) - 1 - len(mapping))*np.log(3) - entropy(at_clust["records"]) + hs
+    print("s_cg - s_hr for %s = %8.6lf" % (str(mapping),delta_s_conf))
+    return mapping,list(at_clust.columns[mapping]),hs,hk,tot_smap,delta_s_conf
 
 # check input parameters
 if len(sys.argv) < 2:
@@ -87,10 +89,12 @@ for ncg in range(1,n_at+1):
             k += 1
             print("adding key", key, " k = ", k)
             cg_mappings[key] = compute_entropies(at_clust, df, mapping, pr)
-
-output_filename = "./results/results_" + sys.argv[1] + ".csv"
+if max_binom == 1000000:
+    output_filename = "./results/results_" + sys.argv[1] + ".csv"
+else:
+    output_filename = "./results/results_" + sys.argv[1] + "_" + sys.argv[2] + ".csv"
 output_df = pd.DataFrame(cg_mappings.values())
-output_df.columns = ["mapping","trans_mapping","hs","hk","smap"]
+output_df.columns = ["mapping","trans_mapping","hs","hk","smap","smap_inf"]
 output_df.to_csv(output_filename,sep=",",float_format = "%8.6lf")
 
 print("Total execution time (seconds) ", time.time() - start_time)
