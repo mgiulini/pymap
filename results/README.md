@@ -1,9 +1,6 @@
-Results
+This folder the data frames produced by running pymap.
 
-# 
-
-- results_m1.csv
-- results_m2.csv
+More specifically, *results_m1.csv* and *results_m2.csv* refer to the two reduced models of the Nasdaq stock market.
 
 Each Data Frame contains the following columns:
 - *mapping* : the index of the retained degrees of freedom
