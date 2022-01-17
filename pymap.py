@@ -23,11 +23,11 @@ def compute_entropies(at_clust, df,mapping, pr):
     pk = np.multiply(ks[0], ks[1])
     hk = entropy(pk)
     print("hk for %s = %8.6lf" % (str(mapping),hk))
-    # marginalised coarse-grained distribution
-    cg_marginalised = at_clust.groupby(at_clust.columns[mapping].tolist()).size().reset_index().rename(columns={0:'records'})
+    # multiplicity of hr microstates mapping onto each
+    omega_1 = at_clust.groupby(at_clust.columns[mapping].tolist()).size().reset_index().rename(columns={0:'records'})
     # smeared probability distribution
-    p_bar_r = cg_clust["records"]/df.shape[0]/cg_marginalised["records"]
-    new_p_bar = pd.concat([cg_marginalised,p_bar_r],axis=1) # to keep track of all the cg configurations
+    p_bar_r = cg_clust["records"]/df.shape[0]/omega_1["records"]
+    new_p_bar = pd.concat([omega_1,p_bar_r],axis=1) # to keep track of all the cg configurations
     # state-wise mapping entropy
     mapping_entropy = []
     for n in range(at_clust.shape[0]):
@@ -36,8 +36,8 @@ def compute_entropies(at_clust, df,mapping, pr):
     tot_smap = sum(mapping_entropy)
     print("mapping entropy for %s = %8.6lf" % (str(mapping),tot_smap))
     delta_s_conf = (len(at_clust.columns) - 1 - len(mapping))*np.log(3) - entropy(at_clust["records"]) + hs
-    print("s_cg - s_hr for %s = %8.6lf" % (str(mapping),delta_s_conf))
-    return mapping,list(at_clust.columns[mapping]),hs,hk,tot_smap,delta_s_conf
+    print("infinite sampling mapping entropy for %s = %8.6lf" % (str(mapping),delta_s_conf))
+    return len(mapping),mapping,list(at_clust.columns[mapping]),hs,hk,tot_smap,delta_s_conf
 
 # check input parameters
 if len(sys.argv) < 2:
@@ -94,7 +94,7 @@ if max_binom == 1000000:
 else:
     output_filename = "./results/results_" + sys.argv[1] + "_" + sys.argv[2] + ".csv"
 output_df = pd.DataFrame(cg_mappings.values())
-output_df.columns = ["mapping","trans_mapping","hs","hk","smap","smap_inf"]
+output_df.columns = ["N","mapping","trans_mapping","hs","hk","smap","smap_inf"]
 output_df.to_csv(output_filename,sep=",",float_format = "%8.6lf")
 
 print("Total execution time (seconds) ", time.time() - start_time)
