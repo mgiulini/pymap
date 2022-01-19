@@ -1,4 +1,4 @@
-This folder the data frames produced by running pymap.
+This folder contains the data frames produced by running pymap.
 
 More specifically, *results_m1.csv* and *results_m2.csv* refer to the two reduced models of the Nasdaq stock market.
 
