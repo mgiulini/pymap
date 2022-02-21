@@ -23,4 +23,4 @@ This folder includes the following files:
 - *6d93_opt_smaps.txt*, with the optimal values of mapping entropy obtained through 48 independent optimisations;
 - *6d93_opt_mappings.txt*, with the corresponding mappings;
 - *6d93_opt_probs.pdb*, the PDB of tamapin in which the atom-wise probabilities of being conserved by the optimisations are insterted in the *beta factor* column;
-- *6d93_smaps.txt*, values of mapping entropy calculated for all the mappings present [here](https://github.com/CIML-VARIAMOLS/GRAWL/blob/master/dataset/6d93_mappings_def.txt). The values differ from those showed [there](6d93_smaps_def_scaled.txt), as here the calculation is carried out directly using the Kullback-Leibler definition of the mapping entropy.
+- *6d93_smaps.txt*, values of mapping entropy calculated for all the mappings present [here](https://github.com/CIML-VARIAMOLS/GRAWL/blob/master/dataset/6d93_mappings_def.txt). The values differ from those showed [there](https://github.com/CIML-VARIAMOLS/GRAWL/blob/master/dataset/6d93_smaps_def_scaled.txt), as here the calculation is carried out directly using the Kullback-Leibler definition of the mapping entropy.
