@@ -25,6 +25,7 @@ def compute_entropies(at_clust, df,mapping, pr):
     print("hk for %s = %8.6lf" % (str(mapping),hk))
     # multiplicity of hr microstates mapping onto each
     omega_1 = at_clust.groupby(at_clust.columns[mapping].tolist()).size().reset_index().rename(columns={0:'records'})
+    print("omega_1", omega_1)
     # smeared probability distribution
     p_bar_r = cg_clust["records"]/df.shape[0]/omega_1["records"]
     new_p_bar = pd.concat([omega_1,p_bar_r],axis=1) # to keep track of all the cg configurations

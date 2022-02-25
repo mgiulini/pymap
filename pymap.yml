@@ -1,0 +1,22 @@
+# create environment:
+# conda env create --file pymap.yml
+# -----
+# update environment:
+# conda env update --file pymap.yml --prune
+# -----
+# Insert additional requirements at the bottom.
+# Rise, jupyter_contrib_nbextensions, xlrd, plotly
+# are not strictly necessary for this project and
+# can be omitted.
+# -----
+name: pymap
+channels:
+    - conda-forge
+    - anaconda
+dependencies:
+    - python
+    - numpy
+    - pandas
+    - pip
+    - scipy
+    - time
