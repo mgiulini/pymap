@@ -39,13 +39,21 @@ The program must be provided with the name of a data set contained in the *data*
 
 ## non-interacting spin system
 
+The first data set described in [this article]() contains 20 non-interacting spins. The variables of interest can be calculated with the following command
+
 ```
 python3 pymap spins
 ```
 
+In this context, the mapping space is quite big, and *max_binom* allows one to explore just a portion of it in few minutes: 
+
+```
+python3 pymap spins 5
+```
+
 ## financial market
 
-To obtain the full results of [this paper]() one can use the following command:
+To obtain the full results for the simple model of the Nasdaq stock market reported [here]() one can use the following command:
 
 ```
 python3 pymap m1
@@ -55,10 +63,4 @@ and
 
 ```
 python3 pymap m2
-```
-
-In the latter case, the mapping space is already quite big, and *max_binom* allows one to explore just a portion of it in few minutes: 
-
-```
-python3 pymap m2 5
 ```
