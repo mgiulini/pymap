@@ -1,6 +1,7 @@
 # Data sets
 
 The available data sets are
+- *spins.csv*, corresponding to the sample of the system of non-interacting spins in [this paper]()
 - *m1.csv*, corresponding to the *m1* model in [this paper]()
 - *m2.csv*, corresponding to the *m2* model in [this paper]()
 
