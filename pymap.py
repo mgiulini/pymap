@@ -9,7 +9,19 @@ import time
 
 start_time = time.time()
 
-def compute_entropies(at_clust,df,mapping,pr):
+def check_volume(dataframe,ncols):
+    V = np.unique([len(np.unique(dataframe.iloc[:,n])) for n in range(ncols-1)], return_counts=True)
+    if len(V[1]) != 1:
+        print("non-constant volume detected, V = ", V, "choosing the most likely one")
+        agmax = np.argmax(V[1])
+        V = V[0][agmax]
+    else:
+        print("constant volume detected, V = ", V)
+        V = V[0][0]
+    print("V = ", V)
+    return V
+
+def compute_entropies(at_clust,df,mapping,pr,V):
     """
     starting from original and atomistic data frames, resolution, relevance, and mapping entropy are computed
     """
@@ -36,7 +48,7 @@ def compute_entropies(at_clust,df,mapping,pr):
         mapping_entropy.append(pr[n]*np.log(pr[n]/new_p_bar.iloc[s,-1]))
     tot_smap = sum(mapping_entropy)
     print("smap for %s = %8.6lf" % (str(mapping),tot_smap))
-    delta_s_conf = (len(at_clust.columns) - 1 - len(mapping))*np.log(3) - entropy(at_clust["records"]) + hs
+    delta_s_conf = (len(at_clust.columns) - 1 - len(mapping))*np.log(V) - entropy(at_clust["records"]) + hs
     print("infinite sampling mapping entropy for %s = %8.6lf" % (str(mapping),delta_s_conf))
     return len(mapping),mapping,list(at_clust.columns[mapping]),hs,hk,tot_smap,delta_s_conf
 
@@ -66,6 +78,8 @@ print("at_clust", at_clust)
 print("atomistic columns", at_clust.columns)
 print("at_clust shape", at_clust.shape)
 pr = at_clust["records"]/df.shape[0] # detailed, atomistic probability distribution
+# check volume
+V = check_volume(df,ncols)
 
 # creating fully detailed mapping
 print("total number of mappings = ", math.pow(2,n_at) - 1)
@@ -90,9 +104,7 @@ for ncg in range(1,n_at+1):
         if key not in cg_mappings.keys():
             k += 1
             print("adding key", key, " k = ", k)
-            cg_mappings[key] = compute_entropies(at_clust, df, mapping, pr)
-            # mutual information
-            #if ncg == 2:
+            cg_mappings[key] = compute_entropies(at_clust, df, mapping, pr, V)
 
 if max_binom == 1000000:
     output_filename = "./results/results_" + sys.argv[1] + ".csv"
