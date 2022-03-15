@@ -35,20 +35,20 @@ conda activate pymap
 
 # Usage
 
-The program must be provided with the name of a data set contained in the *data* folder. The second, optional parameter, *max_binom*, that can be given to pymap is the maximum number of mappings that must be generated for each degree of coarse-graining. The default choice is to generate all the coarse-grained mappings for each *N*, a task that becomes prohibitive when *n > 15*.
+The program must be provided with the name of a data set. The second, optional parameter, *max_binom*, that can be given to pymap is the maximum number of mappings that must be generated for each degree of coarse-graining. The default choice is to generate all the coarse-grained mappings for each *N*, a task that becomes prohibitive when *n > 15*. Verbosity can be turned on with the *-v* (*--verbose*) flag.
 
 ## non-interacting spin system
 
 The first data set described in [this article](https://arxiv.org/abs/2203.00100) contains 20 non-interacting spins. The variables of interest can be calculated with the following command
 
 ```
-python3 pymap.py spins
+python3 pymap.py data/spins.csv results/results_spins.csv
 ```
 
 In this context, the mapping space is quite big, and *max_binom* allows one to explore just a portion of it in few minutes: 
 
 ```
-python3 pymap.py spins 5
+python3 pymap.py data/spins.csv results/results_spins_m5.csv --max_binom 5
 ```
 
 ## financial market
@@ -56,11 +56,11 @@ python3 pymap.py spins 5
 To obtain the full results for the simple model of the Nasdaq stock market reported [here](https://arxiv.org/abs/2203.00100) one can use the following command:
 
 ```
-python3 pymap.py m1
+python3 pymap.py data/m1.csv results/results_m1.csv
 ```
 
 and 
 
 ```
-python3 pymap.py m2
+python3 pymap.py data/m2.csv results/results_m2.csv
 ```
