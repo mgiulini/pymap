@@ -7,6 +7,8 @@ import math
 import sys
 import time
 import argparse
+# local modules
+from utils import check_volume
 
 def parse_arguments():
     """
@@ -26,21 +28,6 @@ def parse_arguments():
     if args.max_binom < 1:
         raise Exception("max_binom must be positive")
     return args
-
-def check_volume(dataframe,ncols):
-    """
-    calculate the volume associated to each degree of freedom
-    """
-    V = np.unique([len(np.unique(dataframe.iloc[:,n])) for n in range(ncols-1)], return_counts=True)
-    if len(V[1]) != 1:
-        print("non-constant volume detected, V = ", V, "choosing the most likely one")
-        agmax = np.argmax(V[1])
-        V = V[0][agmax]
-    else:
-        print("constant volume detected, V = ", V)
-        V = V[0][0]
-    print("V = ", V)
-    return V
 
 def compute_entropies(at_clust,df,mapping,pr,V):
     """
