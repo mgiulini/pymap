@@ -33,6 +33,14 @@ Once the environment is correctly created, it must be activated via:
 conda activate pymap
 ```
 
+# Testing
+
+Pytest is employed to test the correct installation of pymap. In order to do so, run the following command from the main directory:
+
+```
+python -m pytest tests
+```
+
 # Usage
 
 The program must be provided with the name of a data set contained in the *data* folder. The second, optional parameter, *max_binom*, that can be given to pymap is the maximum number of mappings that must be generated for each degree of coarse-graining. The default choice is to generate all the coarse-grained mappings for each *N*, a task that becomes prohibitive when *n > 15*.
