@@ -16,6 +16,20 @@ def check_volume(dataframe,ncols):
     print("V = ", V)
     return V
 
+def validate_clust(clust):
+    """
+    do some validation of the at/cg dataframes
+    """
+    if clust.iloc[:,:-1].duplicated().any():
+        raise Exception("Duplicate row detected in dataframe")
+
+def validate_dataframe(dataframe):
+    """
+    do some checks on the original dataframe
+    """
+    if dataframe.duplicated().any() == False:
+        raise Warning("No duplicate row detected")
+
 def get_clust(dataframe,mapping):
     """
     compute the clustering

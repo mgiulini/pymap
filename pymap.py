@@ -15,10 +15,10 @@ def parse_arguments():
     parse and check the command-line arguments
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument("datafile", type=argparse.FileType('r'), help="csv input data set")
+    parser.add_argument("data_file", type=argparse.FileType('r'), help="csv input data set")
     parser.add_argument("-v","--verbose", help="increase output verbosity",action="store_true")
     parser.add_argument("-m","--max_binom", type=int, default = 1000000, help="maximum number of mappings per N")
-    parser.add_argument("output", type=argparse.FileType('w'), help="output data set")
+    parser.add_argument("output_file", type=argparse.FileType('w'), help="output data set")
     args = parser.parse_args()
     # checks
     print("input filename", args.datafile)
@@ -36,6 +36,7 @@ def compute_entropies(at_clust,df,mapping,pr,V):
     # coarse-grained clustering
     cg_clust = df.groupby(df.columns[mapping].tolist()).size().reset_index().rename(columns={0:'records'})
     cg_clust.columns = pd.concat([pd.Series(df.columns[mapping]), pd.Series("records")])
+    print("cg_clust",cg_clust)
     # resolution with respect to the full sampling
     hs = entropy(cg_clust["records"])
     #print("hs for %s = %8.6lf" % (str(mapping),hs))
