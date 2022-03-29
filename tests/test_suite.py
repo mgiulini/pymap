@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 import pytest
 # import utils modules
-from utils import check_volume, get_clust, validate_clust, calculate_pbar, calculate_smap, calculate_smap_inf
+from utils import check_volume, get_clust, validate_clust, calculate_pbar, calculate_smap, calculate_smap_inf, calculate_entropies
 
 def test_volume():
     """test correct calculation of the volume in a trivial case"""
@@ -91,18 +91,18 @@ def test_smap_inf_zero():
     expected_smap_inf = 0.0
     assert expected_smap_inf == smap_inf
 
-#def test_hs():
+def test_hs_hk_error():
+    cg_clust = pd.DataFrame({'a': [0,1], 'b': [4,-1]})
+    with pytest.raises(ValueError, match="cg_clust does not have a 'records' column"):
+        calculate_entropies(cg_clust)
+    cg_clust = pd.DataFrame({'a': [0,1], 'b': [4,-1], 'records': [1,-1]})
+    with pytest.raises(ValueError, match="'records' column in cg_clust contains negative values"):
+        calculate_entropies(cg_clust)
 
-# def test_smap_zero():
-#     d = {'a' : [0,0,1], "b" : [1,0,1]}
-#     df = pd.DataFrame(d)
-#     at_mapping = np.array([0,1])
-#     at_df = get_clust(df,at_mapping)
-#     V = check_volume(at_df,2)
-#     cg_mapping = np.array([0])
-#     cg_df = get_clust(df,cg_mapping)
-#     smap, smap_inf = calculate_smap(at_df, cg_df, cg_mapping, V)
-#     exp_smap = 0.0
-#     exp_smap_inf = 0.0
-#     assert smap == exp_smap
-#     assert smap_inf == exp_smap_inf
+def test_hs_hk():
+    cg_clust = pd.DataFrame({'a': [0,1], 'b': [4,-1], 'records': [1,1]})
+    hs, hk = calculate_entropies(cg_clust)
+    exp_hs = np.log(2)
+    exp_hk = 0.0
+    assert exp_hs == hs
+    assert exp_hk == hk

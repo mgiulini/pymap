@@ -1,6 +1,7 @@
 import numpy as np 
 import pandas as pd
 from numpy.random import default_rng
+from scipy.stats import entropy
 
 def check_volume(dataframe,ncols):
     """
@@ -44,7 +45,13 @@ def calculate_entropies(cg_clust):
     """
     calculate resolution and relevance from the coarse-grained clustering
     """
+    if "records" not in cg_clust.columns:
+        raise ValueError("cg_clust does not have a 'records' column")
+    if (cg_clust["records"] < 0).any() == True:
+        raise ValueError("'records' column in cg_clust contains negative values")
+    # resolution        
     hs = entropy(cg_clust["records"])
+    # relevance
     ks = np.unique(cg_clust["records"], return_counts=True)
     pk = np.multiply(ks[0], ks[1])
     hk = entropy(pk)
@@ -87,10 +94,3 @@ def calculate_smap(at_clust, mapping, pr, new_p_bar):
 #     """
 #     faster calculation of smap
 #     """
-
-
-    #numbers += base_value
-    #print("adding base_value to numbers", numbers)
-    #binary_numbers = [bin(num)[2:].zfill(nat) for num in numbers]
-    #print("binary_numbers", binary_numbers)
-
