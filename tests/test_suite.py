@@ -8,13 +8,12 @@ import numpy as np
 import pandas as pd
 import pytest
 # import utils modules
-from utils import check_volume, get_clust, validate_clust
+from utils import check_volume, get_clust, validate_clust, calculate_pbar, calculate_smap, calculate_smap_inf
 
 def test_volume():
     """test correct calculation of the volume in a trivial case"""
-    np_arr = np.array([[0,1],[0,0],[1,1]])
-    df = pd.DataFrame(np_arr)
-    print(df)
+    d = {'a' : [0,0,1], "b" : [1,0,1]}
+    df = pd.DataFrame(d)
     assert check_volume(df,df.shape[1]) == 2
 
 def test_at_clust():
@@ -44,3 +43,66 @@ def test_cg_clust_error():
     with pytest.raises(Exception, match="Duplicate row detected in dataframe"):
         validate_clust(df)
 
+def test_calculate_pbar():
+    """test correct calculation of pbar"""
+    full_d = {'a': [0,1,1,1], 'b': [4,-1,-1,4]}
+    df = pd.DataFrame(full_d)
+    at_mapping = np.array([0,1])
+    at_df = get_clust(df,at_mapping)
+    nobs = df.shape[0]
+    mapping = np.array([0])
+    cg_df = get_clust(df, mapping)
+    # keeping only "a" gives rise to confs 0, with 1 at conf (1 original), and 1 with 2 at confs (4 original). pbar([0,4]) = 0.25,  pbar([1,x]) = 0.75/2  
+    expected_pbar = {"a": [0,1], "omega_1": [1,2], "p_bar" : [0.25,0.375]}
+    expected_pbar_df = pd.DataFrame(expected_pbar)
+    pbar = calculate_pbar(at_df, cg_df , nobs, mapping)
+    assert pbar.equals(expected_pbar_df)
+
+def test_smap_zero():
+    """test correct calculation of smap"""
+    df = pd.DataFrame({'a': [0,1,1,0], 'b': [4,-1,-1,4]})
+    at_mapping = np.array([0,1])
+    at_df = get_clust(df,at_mapping)
+    pr = at_df["records"]/df.shape[0]
+    mapping = np.array([0])
+    cg_df = get_clust(df, mapping)
+    nobs = df.shape[0]
+    p_bar = pd.DataFrame({"a": [0,1], "omega_1": [2,2], "p_bar" : [0.5,0.5]})
+    smap = calculate_smap(at_df, mapping, pr, p_bar)
+    expected_smap = 0.0
+    assert expected_smap == smap
+
+def test_smap_inf_error():
+    """test correct exceptions during the calculation of smap_inf"""
+    nat, ncg = 9, 10
+    with pytest.raises(ValueError, match="n (9) < N (10)"):
+        calculate_smap_inf(nat, ncg, 0.0, 0.0, 2)
+    nat, ncg = 10,9
+    with pytest.raises(ValueError, match="hs_at (0.0) < hs_cg (1.0)"):
+        calculate_smap_inf(nat, ncg, 0.0, 1.0, 2)
+    
+def test_smap_inf_zero():
+    """test correct calculation of smap_inf"""
+    nat, ncg = 2, 1
+    V = 3
+    hs_at = np.log(9)
+    hs_cg = np.log(3)
+    smap_inf = calculate_smap_inf(nat,ncg,hs_at,hs_cg,V)
+    expected_smap_inf = 0.0
+    assert expected_smap_inf == smap_inf
+
+#def test_hs():
+
+# def test_smap_zero():
+#     d = {'a' : [0,0,1], "b" : [1,0,1]}
+#     df = pd.DataFrame(d)
+#     at_mapping = np.array([0,1])
+#     at_df = get_clust(df,at_mapping)
+#     V = check_volume(at_df,2)
+#     cg_mapping = np.array([0])
+#     cg_df = get_clust(df,cg_mapping)
+#     smap, smap_inf = calculate_smap(at_df, cg_df, cg_mapping, V)
+#     exp_smap = 0.0
+#     exp_smap_inf = 0.0
+#     assert smap == exp_smap
+#     assert smap_inf == exp_smap_inf
