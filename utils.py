@@ -61,7 +61,7 @@ def calculate_pbar(at_clust, cg_clust, nobs, mapping):
     omega_1 = at_clust.groupby(at_clust.columns[mapping].tolist()).size().reset_index().rename(columns={0:'omega_1'})
     # smeared probability distribution
     p_bar_r = cg_clust["records"]/nobs/omega_1["omega_1"]
-    print("p_bar_r\n",p_bar_r)
+    #print("p_bar_r\n",p_bar_r)
     new_p_bar = pd.concat([omega_1,p_bar_r],axis=1) # to keep track of all the cg configurations
     new_p_bar.columns = pd.concat([pd.Series(at_clust.columns[mapping]), pd.Series("omega_1"), pd.Series("p_bar")])
     return new_p_bar
