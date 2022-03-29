@@ -26,6 +26,7 @@ def validate_clust(clust):
 def validate_dataframe(dataframe):
     """
     do some checks on the original dataframe
+        - you expect some duplicates, to give rise to non-trivial probabilities
     """
     if dataframe.duplicated().any() == False:
         raise Warning("No duplicate row detected")

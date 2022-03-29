@@ -6,8 +6,9 @@ This file contains a few python tests to check the correct installation of pymap
 import os
 import numpy as np
 import pandas as pd
+import pytest
 # import utils modules
-from utils import check_volume, get_clust
+from utils import check_volume, get_clust, validate_clust
 
 def test_volume():
     """test correct calculation of the volume in a trivial case"""
@@ -36,5 +37,10 @@ def test_cg_clust():
     expected_cg_df = pd.DataFrame(expected_data)
     assert cg_df.equals(expected_cg_df)
 
-#def test_cg_clust_error():
+def test_cg_clust_error():
     """cg clustering should raise an error if equal rows are present"""
+    wrong_cg_clust = {'a': [1, 0, 1, 1, 1], 'b': [-1, 4, -1, 4, 0], "records": [1,2,3,4,5]} # the row (1,-1) is a duplicate
+    df = pd.DataFrame(wrong_cg_clust)
+    with pytest.raises(Exception, match="Duplicate row detected in dataframe"):
+        validate_clust(df)
+
