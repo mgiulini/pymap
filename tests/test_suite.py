@@ -8,7 +8,15 @@ import numpy as np
 import pandas as pd
 import pytest
 # import utils modules
-from utils import check_volume, get_clust, validate_clust, calculate_pbar, calculate_smap, calculate_smap_inf, calculate_entropies
+from utils import (
+    check_volume,
+    get_clust,
+    validate_clust,
+    calculate_pbar,
+    calculate_smap,
+    calculate_smap_inf,
+    calculate_entropies
+)
 
 def test_volume():
     """test correct calculation of the volume in a trivial case"""
