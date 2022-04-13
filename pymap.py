@@ -8,7 +8,15 @@ import sys
 import time
 import argparse
 # local modules
-from utils import check_volume, get_clust, validate_clust, calculate_pbar, calculate_smap, calculate_smap_inf, calculate_entropies 
+from utils import (
+    check_volume,
+    get_clust,
+    validate_clust,
+    calculate_pbar,
+    calculate_smap,
+    calculate_smap_inf,
+    calculate_entropies
+)
 
 def parse_arguments():
     """

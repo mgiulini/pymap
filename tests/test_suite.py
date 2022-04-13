@@ -46,7 +46,10 @@ def test_cg_clust():
 
 def test_cg_clust_error():
     """cg clustering should raise an error if equal rows are present"""
-    wrong_cg_clust = {'a': [1, 0, 1, 1, 1], 'b': [-1, 4, -1, 4, 0], "records": [1,2,3,4,5]} # the row (1,-1) is a duplicate
+    # the row (1,-1) is a duplicate
+    wrong_cg_clust = {'a': [1, 0, 1, 1, 1],
+                      'b': [-1, 4, -1, 4, 0],
+                      "records": [1,2,3,4,5]}
     df = pd.DataFrame(wrong_cg_clust)
     with pytest.raises(Exception, match="Duplicate row detected in dataframe"):
         validate_clust(df)
@@ -60,7 +63,8 @@ def test_calculate_pbar():
     nobs = df.shape[0]
     mapping = np.array([0])
     cg_df = get_clust(df, mapping)
-    # keeping only "a" gives rise to confs 0, with 1 at conf (1 original), and 1 with 2 at confs (4 original). pbar([0,4]) = 0.25,  pbar([1,x]) = 0.75/2  
+    # keeping only "a" gives rise to confs 0, with 1 at conf (1 original), and
+    # 1 with 2 at confs (4 original). pbar([0,4]) = 0.25,  pbar([1,x]) = 0.75/2
     expected_pbar = {"a": [0,1], "omega_1": [1,2], "p_bar" : [0.25,0.375]}
     expected_pbar_df = pd.DataFrame(expected_pbar)
     pbar = calculate_pbar(at_df, cg_df , nobs, mapping)
@@ -101,10 +105,12 @@ def test_smap_inf_zero():
 
 def test_hs_hk_error():
     cg_clust = pd.DataFrame({'a': [0,1], 'b': [4,-1]})
-    with pytest.raises(ValueError, match="cg_clust does not have a 'records' column"):
+    exp_str = "cg_clust does not have a 'records' column"
+    with pytest.raises(ValueError, match=exp_str):
         calculate_entropies(cg_clust)
     cg_clust = pd.DataFrame({'a': [0,1], 'b': [4,-1], 'records': [1,-1]})
-    with pytest.raises(ValueError, match="'records' column in cg_clust contains negative values"):
+    exp_str = "'records' column in cg_clust contains negative values"
+    with pytest.raises(ValueError, match=exp_str):
         calculate_entropies(cg_clust)
 
 def test_hs_hk():

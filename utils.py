@@ -39,6 +39,7 @@ def get_clust(dataframe,mapping):
     """
     clust = dataframe.groupby(dataframe.columns[mapping].tolist()).size().reset_index().rename(columns={0:'records'})
     clust.columns = pd.concat([pd.Series(dataframe.columns[mapping]), pd.Series("records")])
+    validate_clust(clust)
     return clust
 
 def calculate_entropies(cg_clust):
