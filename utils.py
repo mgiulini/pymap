@@ -1,7 +1,63 @@
+from typing import Optional
 import numpy as np 
 import pandas as pd
 from numpy.random import default_rng
 from scipy.stats import entropy
+
+def system_parameters_setup(parfile):
+    # receives the name of the parameters file in input
+    # parses it and gives back a dictionary
+    ###################################################
+    print("reading parameters file named ", parfile)
+    parameters = {}
+    lines = parfile.read().split("\n")
+    for ln in lines[:-1]:
+        if ln.startswith("#") == False:
+            split_list = ln.split()
+            if len(split_list) != 2:
+                raise Exception(f"badly formatted parameter line\n{ln}")
+            else:
+                par_name = split_list[0]
+                par_value = split_list[1]
+                parameters[par_name] = par_value
+                print("parameter ", par_name, " = ", par_value)
+    parfile.close()
+    return parameters
+
+def check_mandatory_parameters(parameters):
+    """Check the existence of mandatory parameters."""
+    mandatory_keys = [
+        "input_filename",
+        "output_filename"
+    ]
+
+    observed_pars = parameters.keys()
+
+    for par in mandatory_keys:
+        if par not in observed_pars:
+            raise Exception(f"missing parameter {par}")
+    
+    return
+
+def check_optional_parameters(parameters):
+    """Check the existence of optional parameters. Add their default value if absent"""
+    optional_keys = {
+        "max_binom" : ["integer", 100000],
+    }
+    
+    observed_pars = parameters.keys()
+
+    for optk in optional_keys.keys():
+        if optk not in observed_pars:
+            parameters[optk] = optional_keys[optk][1]
+        else:
+            if optional_keys[optk][0] == "integer":
+                parameters[optk] = int(parameters[optk])
+            if optional_keys[optk][0] == "float":
+                parameters[optk] = float(parameters[optk])
+        
+    return parameters
+
 
 def check_volume(dataframe,ncols):
     """

@@ -9,13 +9,18 @@ import time
 import argparse
 # local modules
 from utils import (
+    check_optional_parameters,
     check_volume,
     get_clust,
+    system_parameters_setup,
     validate_clust,
     calculate_pbar,
     calculate_smap,
     calculate_smap_inf,
-    calculate_entropies
+    calculate_entropies,
+    system_parameters_setup,
+    check_mandatory_parameters,
+    check_optional_parameters
 )
 
 def parse_arguments():
@@ -23,18 +28,15 @@ def parse_arguments():
     parse and check the command-line arguments
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument("datafile", type=argparse.FileType('r'), help="csv input data set")
+    parser.add_argument("-p","--parameters", type=argparse.FileType('r'), help="dat input parameter file")
     parser.add_argument("-v","--verbose", help="increase output verbosity",action="store_true")
-    parser.add_argument("-m","--max_binom", type=int, default = 1000000, help="maximum number of mappings per N")
-    parser.add_argument("output_file", type=argparse.FileType('w'), help="output data set")
     args = parser.parse_args()
+    print(args.__dict__)
     # checks
-    print("input filename", args.datafile)
-    print("output filename", args.output_file)
+    if not args.parameters:
+        raise Exception("Parameter file is mandatory")
     if args.verbose:
         print("verbosity turned on")
-    if args.max_binom < 1:
-        raise Exception("max_binom must be positive")
     return args
 
 def main():
@@ -46,10 +48,17 @@ def main():
     args = parse_arguments()
 
     # read_data
-    with args.datafile as f:
+    pars = system_parameters_setup(args.parameters)
+    print(f"Parameters {pars}")
+    check_mandatory_parameters(pars)
+    cleaned_pars = check_optional_parameters(pars)
+    print(f"Cleaned Parameters {pars}")
+    
+    with open(cleaned_pars["input_filename"], "r") as f:
         ncols = len(f.readline().split(','))
     print("number of columns in the dataset = ", ncols)
-    df = pd.read_csv(args.datafile.name, sep = ",",usecols=range(1,ncols))
+    
+    df = pd.read_csv(cleaned_pars["input_filename"], sep = ",",usecols=range(1,ncols))
     print("df shape", df.shape)
     print("df.columns", df.columns)
     n_at = df.shape[1]
@@ -82,7 +91,7 @@ def main():
         cg_count = int(binom(n_at,ncg))
         print("cg_count", cg_count)
         k = 0
-        max_range = min(cg_count,args.max_binom)
+        max_range = min(cg_count,cleaned_pars["max_binom"])
         while k < max_range:
             mapping = np.random.choice(at_mapping, ncg, replace=False)
             mapping.sort()
@@ -100,7 +109,7 @@ def main():
     
     output_df = pd.DataFrame(cg_mappings.values())
     output_df.columns = ["N","mapping","trans_mapping","hs","hk","smap","smap_inf"]
-    output_df.to_csv(args.output_file,sep=",",float_format = "%8.6lf")
+    output_df.to_csv(cleaned_pars["output_filename"], sep=",", float_format = "%8.6lf")
     
     print("Total execution time (seconds) %8.6lf" % (time.time() - start_time))
 
