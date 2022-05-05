@@ -1,4 +1,5 @@
 import os 
+from pathlib import Path
 import pandas as pd 
 import numpy as np 
 from scipy.stats import entropy
@@ -54,6 +55,10 @@ def main():
     cleaned_pars = check_optional_parameters(pars)
     print(f"Cleaned Parameters {pars}")
     
+    output_path = Path(cleaned_pars["output_filename"])
+    if output_path.is_file():
+        raise Exception(f"Output file {cleaned_pars['output_filename']} already existing. Aborting")   
+
     with open(cleaned_pars["input_filename"], "r") as f:
         ncols = len(f.readline().split(','))
     print("number of columns in the dataset = ", ncols)
