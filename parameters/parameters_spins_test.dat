@@ -1,0 +1,4 @@
+# parameters for testing spins
+max_binom 1
+output_filename ./results/results_spins_test.csv
+input_filename ./data/spins.csv

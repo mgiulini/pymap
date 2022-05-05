@@ -1,0 +1,3 @@
+# parameters for m2
+output_filename ./results/results_m2.csv
+input_filename ./data/m2.csv
