@@ -43,7 +43,20 @@ python -m pytest tests
 
 # Usage
 
-The program must be provided with two mandatory command line arguments, namely 1) a (relative) path to a data set 2) a (relative) path to the desired output file. A third, optional argument, *max_binom*, can be given to pymap, specifying the maximum number of mappings that must be generated for each degree of coarse-graining. The default choice is to generate all the coarse-grained mappings for each *N*, a task that becomes prohibitive when *n > 15*. Verbosity can be turned on with the *-v* (*--verbose*) flag. In general, running
+The program must be provided with one single command line argument (-p), namely a (relative) path to a parameter file, containing the parameters to be employed. A list of the accepted parameters is provided here:
+
+| Parameter | Description | Type | Mandatory |
+| ----------- | ----------- | ---- | ------- |
+| *input_filename* | relative path to the input data | str | yes |
+| *output_filename* | relative path to the desired output file | str | yes |
+| *max_binom* *| max number of mappings that must be generated for each degree of coarse-graining | int | no |
+
+
+*The default choice is to generate all the coarse-grained mappings for each *N*, a task that becomes prohibitive when *n > 15*. 
+
+Verbosity can be turned on with the *-v* (*--verbose*) flag.
+
+In general, running
 
 ```
 python pymap -h
