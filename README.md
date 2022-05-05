@@ -69,13 +69,13 @@ shows the available command line arguments.
 The first data set described in [this article](https://arxiv.org/abs/2203.00100) contains 20 non-interacting spins. The variables of interest can be calculated with the following command
 
 ```
-python3 pymap.py data/spins.csv results/results_spins.csv
+python3 pymap.py -p parameters/parameters_spins.dat
 ```
 
 In this context, the mapping space is quite big, and *max_binom* allows one to explore just a portion of it in few minutes: 
 
 ```
-python3 pymap.py data/spins.csv results/results_spins_m5.csv --max_binom 5
+python3 pymap.py -p parameters/parameters_spins_test.dat
 ```
 
 ## financial market
@@ -83,11 +83,11 @@ python3 pymap.py data/spins.csv results/results_spins_m5.csv --max_binom 5
 To obtain the full results for the simple model of the Nasdaq stock market reported [here](https://arxiv.org/abs/2203.00100) one can use the following command:
 
 ```
-python3 pymap.py data/m1.csv results/results_m1.csv
+python3 pymap.py -p parameters/parameters_m1.dat
 ```
 
 and 
 
 ```
-python3 pymap.py data/m2.csv results/results_m2.csv
+python3 pymap.py -p parameters/parameters_m2.dat
 ```
