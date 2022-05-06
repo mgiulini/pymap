@@ -29,7 +29,7 @@ def parse_arguments():
     parse and check the command-line arguments
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument("-p","--parameters", type=argparse.FileType('r'), help="dat input parameter file")
+    parser.add_argument("-p","--parameters", help="dat input parameter file")
     parser.add_argument("-v","--verbose", help="increase output verbosity",action="store_true")
     args = parser.parse_args()
     print(args.__dict__)

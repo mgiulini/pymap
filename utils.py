@@ -1,4 +1,5 @@
 from typing import Optional
+from pathlib import Path
 import numpy as np 
 import pandas as pd
 from numpy.random import default_rng
@@ -14,24 +15,26 @@ def system_parameters_setup(parfile):
     print(f"Cleaned Parameters {cleaned_pars}")
     return cleaned_pars
 
-def read_parfile(parfile):
+def read_parfile(parfile_string):
     # receives the name of the parameters file in input
     # parses it and gives back a dictionary
     ###################################################
-    print("reading parameters file named ", parfile)
+    parfile = Path(parfile_string)
+    print("reading parameters file ", parfile)
+    if parfile.is_file == False:
+        raise Exception("Parameter file not existing. Aborting.")
     parameters = {}
-    lines = parfile.read().split("\n")
-    for ln in lines[:-1]:
-        if ln.startswith("#") == False:
-            split_list = ln.split()
-            if len(split_list) != 2:
-                raise Exception(f"badly formatted parameter line\n{ln}")
-            else:
-                par_name = split_list[0]
-                par_value = split_list[1]
-                parameters[par_name] = par_value
-                print("parameter ", par_name, " = ", par_value)
-    parfile.close()
+    with open(parfile, "r") as pars:
+        for ln in pars:
+            if ln.startswith("#") == False:
+                split_list = ln.split()
+                if len(split_list) != 2:
+                    raise Exception(f"badly formatted parameter line\n{ln}")
+                else:
+                    par_name = split_list[0]
+                    par_value = split_list[1]
+                    parameters[par_name] = par_value
+                    print("parameter ", par_name, " = ", par_value)
     return parameters
 
 def check_mandatory_parameters(parameters):

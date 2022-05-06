@@ -4,12 +4,13 @@ This file contains a few python tests to check the correct installation of pymap
 """
 
 import os
+from pathlib import Path
 import numpy as np
 import pandas as pd
 import pytest
 from pathlib import Path
 # import utils modules
-from utils import (
+from pymap.utils import (
     check_volume,
     get_clust,
     validate_clust,
@@ -20,12 +21,12 @@ from utils import (
     system_parameters_setup
 )
 
-#from . import golden_data
+from . import reference_data
 
-# @pytest.fixture
-# def example_parfile():
-#     """example parameter file"""
-#     return Path(golden_data, "parameters_m1_test.dat")
+@pytest.fixture
+def example_parfile():
+    """example parameter file"""
+    return Path(reference_data, "parameters_test.dat")
 
 def test_volume():
     """test correct calculation of the volume in a trivial case"""
@@ -130,12 +131,14 @@ def test_hs_hk():
     assert exp_hs == hs
     assert exp_hk == hk
 
-# def test_parameter_file(example_parfile):
-#     expected_output_dict = {
-#         "input_filename" : "input.csv",
-#         "output_filename" : "output.csv",
-#         "max_binom" : 2
-#     }
+def test_parameter_file(example_parfile):
+    """Test correct functioning of system_parameter_setup."""
+    expected_output_dict = {
+        "input_filename" : "input.csv",
+        "output_filename" : "output.csv",
+        "max_binom" : 2
+    }
 
-#     observed_pars_dict = system_parameters_setup(example_parfile)
-    
+    observed_pars_dict = system_parameters_setup(example_parfile)
+
+    assert observed_pars_dict == expected_output_dict
