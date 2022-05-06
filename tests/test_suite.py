@@ -128,3 +128,14 @@ def test_hs_hk():
     exp_hk = 0.0
     assert exp_hs == hs
     assert exp_hk == hk
+
+def test_parameter_file(example_parfile):
+    expected_output_dict = {
+        "input_filename" : "input.csv",
+        "output_filename" : "output.csv",
+        "max_binom" : 2
+    }
+
+    observed_pars_dict = open(example_parfile, "r").read()
+
+    assert observed_pars_dict == expected_output_dict
