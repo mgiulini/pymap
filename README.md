@@ -41,6 +41,13 @@ Pytest is employed to test the correct installation of pymap. In order to do so,
 python -m pytest tests
 ```
 
+Or directly run *pytest* inside the *tests* folder:
+
+```
+cd tests
+pytest
+```
+
 # Usage
 
 The program must be provided with one single command line argument (-p), namely a (relative) path to a parameter file, containing the parameters to be employed. A list of the accepted parameters is provided here:
