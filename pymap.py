@@ -49,12 +49,7 @@ def main():
     args = parse_arguments()
 
     # read_data
-    cleaned_pars = system_parameters_setup(args.parameters)
-    
-    
-    output_path = Path(cleaned_pars["output_filename"])
-    if output_path.is_file():
-        raise Exception(f"Output file {cleaned_pars['output_filename']} already existing. Aborting")   
+    cleaned_pars = system_parameters_setup(args.parameters)   
 
     with open(cleaned_pars["input_filename"], "r") as f:
         ncols = len(f.readline().split(','))

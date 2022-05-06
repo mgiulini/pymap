@@ -25,8 +25,23 @@ from . import reference_data
 
 @pytest.fixture
 def example_parfile():
-    """example parameter file"""
+    """example parameter file."""
     return Path(reference_data, "parameters_test.dat")
+
+@pytest.fixture
+def example_missing_parfile():
+    """non existing parameter file."""
+    return Path(reference_data, "parameterf_test.dat")
+
+@pytest.fixture
+def example_incomplete_parfile():
+    """parameter file with no input_filename."""
+    return Path(reference_data, "parameters_test_missing.dat")
+
+@pytest.fixture
+def example_existing_output_parfile():
+    """parameter file with no input_filename."""
+    return Path(reference_data, "parameters_test_existing_output.dat")
 
 def test_volume():
     """test correct calculation of the volume in a trivial case"""
@@ -142,3 +157,18 @@ def test_parameter_file(example_parfile):
     observed_pars_dict = system_parameters_setup(example_parfile)
 
     assert observed_pars_dict == expected_output_dict
+
+def test_missing_parameter_file(example_missing_parfile):
+    """Check error if parameter file is missing."""
+    with pytest.raises(Exception):
+        system_parameters_setup(example_missing_parfile)
+
+def test_incomplete_parameter_file(example_incomplete_parfile):
+    """Check error if parameter file is missing."""
+    with pytest.raises(Exception):
+        system_parameters_setup(example_missing_parfile)
+
+def test_existing_output(example_existing_output_parfile):
+    """Check error if output filename already exists"""
+    with pytest.raises(Exception):
+        system_parameters_setup(example_existing_output_parfile)

@@ -5,7 +5,12 @@ import pandas as pd
 from numpy.random import default_rng
 from scipy.stats import entropy
 
-
+def check_output_file(cleaned_pars):
+    """If the output_filename already exists, block the execution"""
+    output_path = Path(cleaned_pars["output_filename"])
+    if output_path.is_file():
+        raise Exception(f"Output file {cleaned_pars['output_filename']} already existing. Aborting")
+    return
 
 def system_parameters_setup(parfile):
     """Sets up the parameters."""
@@ -13,6 +18,7 @@ def system_parameters_setup(parfile):
     check_mandatory_parameters(pars)
     cleaned_pars = check_optional_parameters(pars)
     print(f"Cleaned Parameters {cleaned_pars}")
+    check_output_file(cleaned_pars)
     return cleaned_pars
 
 def read_parfile(parfile_string):
