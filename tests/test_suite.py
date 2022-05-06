@@ -7,6 +7,7 @@ import os
 import numpy as np
 import pandas as pd
 import pytest
+from pathlib import Path
 # import utils modules
 from utils import (
     check_volume,
@@ -15,8 +16,16 @@ from utils import (
     calculate_pbar,
     calculate_smap,
     calculate_smap_inf,
-    calculate_entropies
+    calculate_entropies,
+    system_parameters_setup
 )
+
+#from . import golden_data
+
+# @pytest.fixture
+# def example_parfile():
+#     """example parameter file"""
+#     return Path(golden_data, "parameters_m1_test.dat")
 
 def test_volume():
     """test correct calculation of the volume in a trivial case"""
@@ -120,3 +129,13 @@ def test_hs_hk():
     exp_hk = 0.0
     assert exp_hs == hs
     assert exp_hk == hk
+
+# def test_parameter_file(example_parfile):
+#     expected_output_dict = {
+#         "input_filename" : "input.csv",
+#         "output_filename" : "output.csv",
+#         "max_binom" : 2
+#     }
+
+#     observed_pars_dict = system_parameters_setup(example_parfile)
+    
