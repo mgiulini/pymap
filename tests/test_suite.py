@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 import pytest
 # import utils modules
-from utils import (
+from pymap.utils import (
     check_volume,
     get_clust,
     validate_clust,
