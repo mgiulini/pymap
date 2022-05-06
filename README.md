@@ -43,7 +43,20 @@ python -m pytest tests
 
 # Usage
 
-The program must be provided with two mandatory command line arguments, namely 1) a (relative) path to a data set 2) a (relative) path to the desired output file. A third, optional argument, *max_binom*, can be given to pymap, specifying the maximum number of mappings that must be generated for each degree of coarse-graining. The default choice is to generate all the coarse-grained mappings for each *N*, a task that becomes prohibitive when *n > 15*. Verbosity can be turned on with the *-v* (*--verbose*) flag. In general, running
+The program must be provided with one single command line argument (-p), namely a (relative) path to a parameter file, containing the parameters to be employed. A list of the accepted parameters is provided here:
+
+| Parameter | Description | Type | Mandatory |
+| ----------- | ----------- | ---- | ------- |
+| *input_filename* | relative path to the input data | str | yes |
+| *output_filename* | relative path to the desired output file | str | yes |
+| *max_binom* *| max number of mappings that must be generated for each degree of coarse-graining | int | no |
+
+
+*The default choice is to generate all the coarse-grained mappings for each *N*, a task that becomes prohibitive when *n > 15*. 
+
+Verbosity can be turned on with the *-v* (*--verbose*) flag.
+
+In general, running
 
 ```
 python pymap -h
@@ -56,13 +69,13 @@ shows the available command line arguments.
 The first data set described in [this article](https://arxiv.org/abs/2203.00100) contains 20 non-interacting spins. The variables of interest can be calculated with the following command
 
 ```
-python3 pymap.py data/spins.csv results/results_spins.csv
+python3 pymap.py -p parameters/parameters_spins.dat
 ```
 
 In this context, the mapping space is quite big, and *max_binom* allows one to explore just a portion of it in few minutes: 
 
 ```
-python3 pymap.py data/spins.csv results/results_spins_m5.csv --max_binom 5
+python3 pymap.py -p parameters/parameters_spins_test.dat
 ```
 
 ## financial market
@@ -70,11 +83,11 @@ python3 pymap.py data/spins.csv results/results_spins_m5.csv --max_binom 5
 To obtain the full results for the simple model of the Nasdaq stock market reported [here](https://arxiv.org/abs/2203.00100) one can use the following command:
 
 ```
-python3 pymap.py data/m1.csv results/results_m1.csv
+python3 pymap.py -p parameters/parameters_m1.dat
 ```
 
 and 
 
 ```
-python3 pymap.py data/m2.csv results/results_m2.csv
+python3 pymap.py -p parameters/parameters_m2.dat
 ```

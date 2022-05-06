@@ -1,0 +1,3 @@
+# parameters for running spins
+output_filename ./results/results_spins.csv
+input_filename ./data/spins.csv
