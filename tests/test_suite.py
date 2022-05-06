@@ -4,6 +4,7 @@ This file contains a few python tests to check the correct installation of pymap
 """
 
 import os
+from pathlib import Path
 import numpy as np
 import pandas as pd
 import pytest
@@ -17,6 +18,13 @@ from pymap.utils import (
     calculate_smap_inf,
     calculate_entropies
 )
+
+from . import reference_data
+
+@pytest.fixture
+def example_parfile():
+    """example parameter file"""
+    return Path(reference_data, "parameters_m1_test.dat")
 
 def test_volume():
     """test correct calculation of the volume in a trivial case"""
