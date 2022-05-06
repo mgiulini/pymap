@@ -4,11 +4,12 @@ This file contains a few python tests to check the correct installation of pymap
 """
 
 import os
+from pathlib import Path
 import numpy as np
 import pandas as pd
 import pytest
 # import utils modules
-from utils import (
+from pymap.utils import (
     check_volume,
     get_clust,
     validate_clust,
@@ -17,6 +18,13 @@ from utils import (
     calculate_smap_inf,
     calculate_entropies
 )
+
+from . import reference_data
+
+@pytest.fixture
+def example_parfile():
+    """example parameter file"""
+    return Path(reference_data, "parameters_m1_test.dat")
 
 def test_volume():
     """test correct calculation of the volume in a trivial case"""
@@ -120,3 +128,14 @@ def test_hs_hk():
     exp_hk = 0.0
     assert exp_hs == hs
     assert exp_hk == hk
+
+def test_parameter_file(example_parfile):
+    expected_output_dict = {
+        "input_filename" : "input.csv",
+        "output_filename" : "output.csv",
+        "max_binom" : 2
+    }
+
+    observed_pars_dict = open(example_parfile, "r").read()
+
+    assert observed_pars_dict == expected_output_dict
