@@ -49,11 +49,8 @@ def main():
     args = parse_arguments()
 
     # read_data
-    pars = system_parameters_setup(args.parameters)
-    print(f"Parameters {pars}")
-    check_mandatory_parameters(pars)
-    cleaned_pars = check_optional_parameters(pars)
-    print(f"Cleaned Parameters {pars}")
+    cleaned_pars = system_parameters_setup(args.parameters)
+    
     
     output_path = Path(cleaned_pars["output_filename"])
     if output_path.is_file():

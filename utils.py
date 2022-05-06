@@ -4,7 +4,17 @@ import pandas as pd
 from numpy.random import default_rng
 from scipy.stats import entropy
 
+
+
 def system_parameters_setup(parfile):
+    """Sets up the parameters."""
+    pars = read_parfile(parfile)
+    check_mandatory_parameters(pars)
+    cleaned_pars = check_optional_parameters(pars)
+    print(f"Cleaned Parameters {cleaned_pars}")
+    return cleaned_pars
+
+def read_parfile(parfile):
     # receives the name of the parameters file in input
     # parses it and gives back a dictionary
     ###################################################
