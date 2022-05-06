@@ -1,4 +1,4 @@
-# parameters for testing m1 scenario
+# parameters for testing
 max_binom 2
 output_filename output.csv
 input_filename input.csv

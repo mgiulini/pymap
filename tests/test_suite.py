@@ -40,7 +40,7 @@ def example_incomplete_parfile():
 
 @pytest.fixture
 def example_existing_output_parfile():
-    """parameter file with no input_filename."""
+    """parameter file with already existing output_filename."""
     return Path(reference_data, "parameters_test_existing_output.dat")
 
 def test_volume():
