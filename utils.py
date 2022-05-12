@@ -1,3 +1,4 @@
+import os
 from typing import Optional
 from pathlib import Path
 import numpy as np 
@@ -166,26 +167,30 @@ def calculate_smap(at_clust, mapping, pr, new_p_bar):
     # infinite sampling mapping entropy
     return tot_smap
 
-# def calculate_smap_faster(at_clust):
-#     """
-#     faster calculation of smap
-#     """
-
-class cg_mappings():
-    """cg mappings object."""
-
-    def __init__(
-            self,
-            ncg,
-            n_mappings
-            ):
-        self.ncg = ncg
-        self.n_mappings = n_mappings
-        self.hs_vect = np.zeros(self.n_mappings)
-        self.hk_vect = np.zeros(self.n_mappings)
-        self.smap_vect = np.zeros(self.n_mappings)
-        self.smap_inf_vect = np.zeros(self.n_mappings)
-        self.mappings_order = []
+def output_mappings(mapping_dict, mapping_order, output_filename):
+    """
+    Functions that outputs the mappings to a file
     
-    def add_mapping()
+    Parameters
+    ----------
+    mapping_dict : dict
+        dictionary of mappings
     
+    mapping_order : list
+        list of ordered mappings
+
+    output_filename : str
+    """
+    
+    header = "N\tmapping\ttrans_mapping\ths\thk\tsmap\tsmap_inf" + os.linesep
+    with open(output_filename, "w") as wfile:
+        # write header
+        wfile.write(header)
+        for ord_map in mapping_order:
+            output_str = [] 
+            for elem in mapping_dict[ord_map]:
+                if isinstance(elem, float):
+                    output_str.append(f"{elem:.6f}")
+                else:
+                    output_str.append(f"{elem}")                    
+            wfile.write("\t".join(output_str) + os.linesep)

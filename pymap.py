@@ -10,18 +10,15 @@ import time
 import argparse
 # local modules
 from utils import (
-    check_optional_parameters,
     check_volume,
     get_clust,
     system_parameters_setup,
-    validate_clust,
     calculate_pbar,
     calculate_smap,
     calculate_smap_inf,
     calculate_entropies,
     system_parameters_setup,
-    check_mandatory_parameters,
-    check_optional_parameters
+    output_mappings
 )
 
 def parse_arguments():
@@ -82,7 +79,8 @@ def main():
     print("atomistic relevance ", hk_at) # computing fully atomistic resolution
     
     cg_mappings = dict()
-    cg_mappings_vect = []
+    cg_mappings_order = []
+    #cg_mappings_vect = []
     # going through the levels of coarse-graining
     for ncg in range(1,n_at+1):
         print("ncg = ", ncg, ", elapsed time (seconds) = %8.6lf" % (time.time() - start_time))
@@ -92,7 +90,6 @@ def main():
         max_range = min(cg_count,cleaned_pars["max_binom"])
         print(f"max_range = {max_range}")
         fixed_n_mappings = []
-        
         while k < max_range:
             mapping = np.random.choice(at_mapping, ncg, replace=False)
             mapping.sort()
@@ -108,15 +105,11 @@ def main():
                 smap = calculate_smap(at_clust, mapping, pr, p_bar)
                 cg_mappings[key] = len(mapping),mapping,list(at_clust.columns[mapping]),hs,hk,smap,smap_inf
                 fixed_n_mappings.append(key)
-        print(f"fixed_n_mappings {fixed_n_mappings}")
         fixed_n_mappings.sort()
-        print(f"sorted fixed_n_mappings {fixed_n_mappings}")
+        # extending the original list
+        cg_mappings_order.extend(fixed_n_mappings)
 
-
-    
-    output_df = pd.DataFrame(cg_mappings.values())
-    output_df.columns = ["N","mapping","trans_mapping","hs","hk","smap","smap_inf"]
-    output_df.to_csv(cleaned_pars["output_filename"], sep=",", float_format = "%8.6lf")
+    output_mappings(cg_mappings, cg_mappings_order, cleaned_pars["output_filename"])
     
     print("Total execution time (seconds) %8.6lf" % (time.time() - start_time))
 
