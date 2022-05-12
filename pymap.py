@@ -82,6 +82,7 @@ def main():
     print("atomistic relevance ", hk_at) # computing fully atomistic resolution
     
     cg_mappings = dict()
+    cg_mappings_vect = []
     # going through the levels of coarse-graining
     for ncg in range(1,n_at+1):
         print("ncg = ", ncg, ", elapsed time (seconds) = %8.6lf" % (time.time() - start_time))
@@ -89,6 +90,9 @@ def main():
         print("cg_count", cg_count)
         k = 0
         max_range = min(cg_count,cleaned_pars["max_binom"])
+        print(f"max_range = {max_range}")
+        fixed_n_mappings = []
+        
         while k < max_range:
             mapping = np.random.choice(at_mapping, ncg, replace=False)
             mapping.sort()
@@ -103,6 +107,12 @@ def main():
                 p_bar = calculate_pbar(at_clust, cg_clust, df.shape[0], mapping)
                 smap = calculate_smap(at_clust, mapping, pr, p_bar)
                 cg_mappings[key] = len(mapping),mapping,list(at_clust.columns[mapping]),hs,hk,smap,smap_inf
+                fixed_n_mappings.append(key)
+        print(f"fixed_n_mappings {fixed_n_mappings}")
+        fixed_n_mappings.sort()
+        print(f"sorted fixed_n_mappings {fixed_n_mappings}")
+
+
     
     output_df = pd.DataFrame(cg_mappings.values())
     output_df.columns = ["N","mapping","trans_mapping","hs","hk","smap","smap_inf"]

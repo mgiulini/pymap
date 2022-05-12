@@ -170,3 +170,22 @@ def calculate_smap(at_clust, mapping, pr, new_p_bar):
 #     """
 #     faster calculation of smap
 #     """
+
+class cg_mappings():
+    """cg mappings object."""
+
+    def __init__(
+            self,
+            ncg,
+            n_mappings
+            ):
+        self.ncg = ncg
+        self.n_mappings = n_mappings
+        self.hs_vect = np.zeros(self.n_mappings)
+        self.hk_vect = np.zeros(self.n_mappings)
+        self.smap_vect = np.zeros(self.n_mappings)
+        self.smap_inf_vect = np.zeros(self.n_mappings)
+        self.mappings_order = []
+    
+    def add_mapping()
+    
