@@ -2,40 +2,25 @@ import os
 from pathlib import Path
 import pandas as pd 
 import numpy as np 
-from scipy.stats import entropy
 from scipy.special import binom
 import math
-import sys
 import time
-import argparse
 # local modules
-from utils import (
-    check_volume,
-    get_clust,
-    system_parameters_setup,
+from libio import (
+    output_mappings,
+    parse_arguments,
+    system_parameters_setup
+)
+from libentropy import (
     calculate_pbar,
     calculate_smap,
     calculate_smap_inf,
     calculate_entropies,
-    system_parameters_setup,
-    output_mappings
 )
-
-def parse_arguments():
-    """
-    parse and check the command-line arguments
-    """
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-p","--parameters", help="dat input parameter file")
-    parser.add_argument("-v","--verbose", help="increase output verbosity",action="store_true")
-    args = parser.parse_args()
-    print(args.__dict__)
-    # checks
-    if not args.parameters:
-        raise Exception("Parameter file is mandatory")
-    if args.verbose:
-        print("verbosity turned on")
-    return args
+from libclust import (
+    check_volume,
+    get_clust,
+)
 
 def main():
     """
