@@ -80,7 +80,6 @@ def main():
     
     cg_mappings = dict()
     cg_mappings_order = []
-    #cg_mappings_vect = []
     # going through the levels of coarse-graining
     for ncg in range(1,n_at+1):
         print("ncg = ", ncg, ", elapsed time (seconds) = %8.6lf" % (time.time() - start_time))
