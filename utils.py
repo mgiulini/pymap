@@ -192,5 +192,5 @@ def output_mappings(mapping_dict, mapping_order, output_filename):
                 if isinstance(elem, float):
                     output_str.append(f"{elem:.6f}")
                 else:
-                    output_str.append(f"{elem}")                    
+                    output_str.append(f"{elem}")
             wfile.write("\t".join(output_str) + os.linesep)
