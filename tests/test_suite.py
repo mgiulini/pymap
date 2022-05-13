@@ -18,6 +18,7 @@ from pymap.utils import (
     calculate_smap,
     calculate_smap_inf,
     calculate_entropies,
+    output_mappings,
     system_parameters_setup
 )
 
@@ -42,6 +43,18 @@ def example_incomplete_parfile():
 def example_existing_output_parfile():
     """parameter file with already existing output_filename."""
     return Path(reference_data, "parameters_test_existing_output.dat")
+
+@pytest.fixture
+def example_mappings():
+    """Example mapping dictionary and corresponding order."""
+    cg_mappings = {}
+    cg_mappings["mapping_dict"] = {
+        (2,6) : (2, np.array([2,6]), ["C", "G"], 0.1, 0.05, 0.2, 1.0),
+        (0,1) : (2, np.array([0,1]), ["A", "B"], 0.2, 0.15, 0.23, 1.0)
+        }
+    
+    cg_mappings["mapping_order"] = [(0,1),(2,6)]
+    return cg_mappings
 
 def test_volume():
     """test correct calculation of the volume in a trivial case"""
@@ -172,3 +185,22 @@ def test_existing_output(example_existing_output_parfile):
     """Check error if output filename already exists"""
     with pytest.raises(Exception):
         system_parameters_setup(example_existing_output_parfile)
+
+def test_output_format(example_mappings):
+    """Check if the output format is the expected one."""
+    output_filename = "test_output.csv"
+    output_mappings(
+        example_mappings["mapping_dict"],
+        example_mappings["mapping_order"],
+        output_filename
+        )
+    # building expected output
+    expected_output = "N\tmapping\ttrans_mapping\ths\thk\tsmap\tsmap_inf" + os.linesep
+    expected_output += "2\t[0 1]\t['A', 'B']\t0.200000\t0.150000\t0.230000\t1.000000" + os.linesep
+    expected_output += "2\t[2 6]\t['C', 'G']\t0.100000\t0.050000\t0.200000\t1.000000" + os.linesep
+
+    file_content = open(output_filename, "r").read()
+
+    assert file_content == expected_output
+
+    os.unlink(output_filename)
