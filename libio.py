@@ -1,14 +1,14 @@
+"""Library to perform input-output tasks."""
 import argparse
 import os
 from pathlib import Path
 
+
 def parse_arguments():
-    """
-    parse and check the command-line arguments
-    """
+    """Parse and check the command-line arguments."""
     parser = argparse.ArgumentParser()
-    parser.add_argument("-p","--parameters", help="dat input parameter file")
-    parser.add_argument("-v","--verbose", help="increase output verbosity",action="store_true")
+    parser.add_argument("-p", "--parameters", help="dat input parameter file")
+    parser.add_argument("-v", "--verbose", help="increase output verbosity", action="store_true")
     args = parser.parse_args()
     print(args.__dict__)
     # checks
@@ -18,15 +18,18 @@ def parse_arguments():
         print("verbosity turned on")
     return args
 
+
 def check_output_file(cleaned_pars):
-    """If the output_filename already exists, block the execution"""
-    output_path = Path(cleaned_pars["output_filename"])
+    """If the output_filename already exists, block the execution."""
+    output_fl = cleaned_pars["output_filename"]
+    output_path = Path(output_fl)
     if output_path.is_file():
-        raise Exception(f"Output file {cleaned_pars['output_filename']} already existing. Aborting")
+        raise Exception(f"Output file {output_fl} already existing. Aborting")
     return
 
+
 def system_parameters_setup(parfile):
-    """Sets up the parameters."""
+    """Set up the parameters."""
     pars = read_parfile(parfile)
     check_mandatory_parameters(pars)
     cleaned_pars = check_optional_parameters(pars)
@@ -34,10 +37,9 @@ def system_parameters_setup(parfile):
     check_output_file(cleaned_pars)
     return cleaned_pars
 
+
 def read_parfile(parfile_string):
-    # receives the name of the parameters file in input
-    # parses it and gives back a dictionary
-    ###################################################
+    """Read parameter file."""
     parfile = Path(parfile_string)
     print("reading parameters file ", parfile)
     if parfile.is_file == False:
@@ -69,16 +71,15 @@ def check_mandatory_parameters(parameters):
     for par in mandatory_keys:
         if par not in observed_pars:
             raise Exception(f"missing parameter {par}")
-    
     return
 
 
 def check_optional_parameters(parameters):
-    """Check the existence of optional parameters. Add their default value if absent"""
+    """Check the existence of optional parameters. Set to default if absent."""
     optional_keys = {
-        "max_binom" : ["integer", 100000],
+        "max_binom": ["integer", 100000],
     }
-    
+
     observed_pars = parameters.keys()
 
     for optk in optional_keys.keys():
@@ -89,31 +90,29 @@ def check_optional_parameters(parameters):
                 parameters[optk] = int(parameters[optk])
             if optional_keys[optk][0] == "float":
                 parameters[optk] = float(parameters[optk])
-        
     return parameters
 
 
 def output_mappings(mapping_dict, mapping_order, output_filename):
     """
-    Functions that outputs the mappings to a file
-    
+    Functions that outputs the mappings to a file.
+
     Parameters
     ----------
     mapping_dict : dict
         dictionary of mappings
-    
+
     mapping_order : list
         list of ordered mappings
 
     output_filename : str
     """
-    
     header = "N\tmapping\ttrans_mapping\ths\thk\tsmap\tsmap_inf" + os.linesep
     with open(output_filename, "w") as wfile:
-        # write header
+        # write header
         wfile.write(header)
         for ord_map in mapping_order:
-            output_str = [] 
+            output_str = []
             for elem in mapping_dict[ord_map]:
                 if isinstance(elem, float):
                     output_str.append(f"{elem:.6f}")
