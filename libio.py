@@ -8,7 +8,12 @@ def parse_arguments():
     """Parse and check the command-line arguments."""
     parser = argparse.ArgumentParser()
     parser.add_argument("-p", "--parameters", help="dat input parameter file")
-    parser.add_argument("-v", "--verbose", help="increase output verbosity", action="store_true")
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        help="increase output verbosity",
+        action="store_true"
+    )
     args = parser.parse_args()
     print(args.__dict__)
     # checks
@@ -42,12 +47,12 @@ def read_parfile(parfile_string):
     """Read parameter file."""
     parfile = Path(parfile_string)
     print("reading parameters file ", parfile)
-    if parfile.is_file == False:
+    if parfile.is_file is False:
         raise Exception("Parameter file not existing. Aborting.")
     parameters = {}
     with open(parfile, "r") as pars:
         for ln in pars:
-            if ln.startswith("#") == False:
+            if ln.startswith("#") is False:
                 split_list = ln.split()
                 if len(split_list) != 2:
                     raise Exception(f"badly formatted parameter line\n{ln}")

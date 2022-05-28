@@ -8,8 +8,8 @@ def calculate_entropies(cg_clust):
     """Calculate resolution and relevance from CG clustering."""
     if "records" not in cg_clust.columns:
         raise ValueError("cg_clust does not have a 'records' column")
-    if (cg_clust["records"] < 0).any() == True:
-        raise ValueError("'records' column in cg_clust contains negative values")
+    if (cg_clust["records"] < 0).any() is True:
+        raise ValueError("'records' col in cg_clust contains negative values")
     # resolution
     hs = entropy(cg_clust["records"])
     # relevance
