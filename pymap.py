@@ -1,26 +1,17 @@
 """pymap main file."""
 
-import pandas as pd
-import numpy as np
-from scipy.special import binom
 import math
 import time
+
+import numpy as np
+import pandas as pd
+from scipy.special import binom
+
 # local modules
-from libio import (
-    output_mappings,
-    parse_arguments,
-    system_parameters_setup
-)
-from libentropy import (
-    calculate_pbar,
-    calculate_smap,
-    calculate_smap_inf,
-    calculate_entropies,
-)
-from libclust import (
-    check_volume,
-    get_clust,
-)
+from libclust import check_volume, get_clust
+from libentropy import (calculate_entropies, calculate_pbar, calculate_smap,
+                        calculate_smap_inf)
+from libio import output_mappings, parse_arguments, system_parameters_setup
 
 
 def main():
@@ -101,7 +92,15 @@ def main():
                     mapping
                 )
                 smap = calculate_smap(at_clust, mapping, pr, p_bar)
-                cg_mappings[key] = len(mapping), mapping, list(at_clust.columns[mapping]), hs, hk, smap, smap_inf
+                cg_mappings[key] = (
+                    len(mapping),
+                    mapping,
+                    list(at_clust.columns[mapping]),
+                    hs,
+                    hk,
+                    smap,
+                    smap_inf
+                )
                 fixed_n_mappings.append(key)
         fixed_n_mappings.sort()
         # extending the original list

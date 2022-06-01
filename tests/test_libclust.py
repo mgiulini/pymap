@@ -3,11 +3,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from libclust import (
-    check_volume,
-    get_clust,
-    validate_clust,
-)
+from libclust import check_volume, get_clust, validate_clust
 
 
 def test_volume():

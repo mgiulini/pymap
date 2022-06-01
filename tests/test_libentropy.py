@@ -4,13 +4,8 @@ import pandas as pd
 import pytest
 
 from libclust import get_clust
-
-from libentropy import (
-    calculate_pbar,
-    calculate_smap,
-    calculate_smap_inf,
-    calculate_entropies,
-)
+from libentropy import (calculate_entropies, calculate_pbar, calculate_smap,
+                        calculate_smap_inf)
 
 
 def test_calculate_pbar():
@@ -89,7 +84,7 @@ def test_hs_hk_error():
     with pytest.raises(ValueError, match=exp_str):
         calculate_entropies(cg_clust)
     cg_clust = pd.DataFrame({'a': [0, 1], 'b': [4, -1], 'records': [1, -1]})
-    exp_str = "'records' column in cg_clust contains negative values"
+    exp_str = "'records' col in cg_clust contains negative values"
     with pytest.raises(ValueError, match=exp_str):
         calculate_entropies(cg_clust)
 

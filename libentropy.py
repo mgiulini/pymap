@@ -1,14 +1,14 @@
 """Library to perform entropy-related tasks."""
 import numpy as np
-from scipy.stats import entropy
 import pandas as pd
+from scipy.stats import entropy
 
 
 def calculate_entropies(cg_clust):
     """Calculate resolution and relevance from CG clustering."""
     if "records" not in cg_clust.columns:
         raise ValueError("cg_clust does not have a 'records' column")
-    if (cg_clust["records"] < 0).any() is True:
+    if (cg_clust["records"] < 0).any():
         raise ValueError("'records' col in cg_clust contains negative values")
     # resolution
     hs = entropy(cg_clust["records"])
@@ -21,7 +21,8 @@ def calculate_entropies(cg_clust):
 
 def calculate_pbar(at_clust, cg_clust, nobs, mapping):
     """Calculate smeared pdf pbar."""
-    omega_1 = at_clust.groupby(at_clust.columns[mapping].tolist()).size().reset_index().rename(columns={0: 'omega_1'})
+    gby = at_clust.groupby(at_clust.columns[mapping].tolist())
+    omega_1 = gby.size().reset_index().rename(columns={0: 'omega_1'})
     # smeared probability distribution
     p_bar_r = cg_clust["records"]/nobs/omega_1["omega_1"]
     # keep track of all the cg configurations
@@ -51,8 +52,9 @@ def calculate_smap(at_clust, mapping, pr, new_p_bar):
     # state-wise mapping entropy
     mapping_entropy = []
     for n in range(at_clust.shape[0]):
-        s = np.where((at_clust.iloc[n, mapping] == new_p_bar.iloc[:, :-2]).all(1) == True)[0][0]
-        mapping_entropy.append(pr[n]*np.log(pr[n]/new_p_bar.iloc[s, -1]))
+        eq_at_pbar = (at_clust.iloc[n, mapping] == new_p_bar.iloc[:, :-2])
+        npw = np.where(eq_at_pbar.all(1))[0][0]
+        mapping_entropy.append(pr[n]*np.log(pr[n]/new_p_bar.iloc[npw, -1]))
     tot_smap = sum(mapping_entropy)
     # infinite sampling mapping entropy
     return tot_smap

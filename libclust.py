@@ -34,7 +34,8 @@ def validate_dataframe(dataframe):
 
 def get_clust(dataframe, mapping):
     """Compute the clustering."""
-    clust = dataframe.groupby(dataframe.columns[mapping].tolist()).size().reset_index().rename(columns={0: 'records'})
+    gby = dataframe.groupby(dataframe.columns[mapping].tolist())
+    clust = gby.size().reset_index().rename(columns={0: 'records'})
     clust.columns = pd.concat(
         [
             pd.Series(dataframe.columns[mapping]),
