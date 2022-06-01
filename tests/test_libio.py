@@ -1,17 +1,14 @@
-""" test_suite
-
-This file contains a few python tests to check the correct installation of pymap
-"""
+"""Test the libentropy library."""
 
 import os
 from pathlib import Path
 import numpy as np
-import pandas as pd
 import pytest
 # import utils modules
 from pymap.libio import (
     output_mappings,
-    system_parameters_setup
+    system_parameters_setup,
+    parse_arguments,
 )
 
 from . import reference_data
@@ -84,9 +81,19 @@ def test_output_format(example_mappings):
         output_filename
         )
     # building expected output
-    expected_output = "N\tmapping\ttrans_mapping\ths\thk\tsmap\tsmap_inf" + os.linesep
-    expected_output += "2\t[0 1]\t['A', 'B']\t0.200000\t0.150000\t0.230000\t1.000000" + os.linesep
-    expected_output += "2\t[2 6]\t['C', 'G']\t0.100000\t0.050000\t0.200000\t1.000000" + os.linesep
+    lines = [
+        "N", "mapping", "trans_mapping", "hs", "hk", "smap", "smap_inf",
+        "2", "[0 1]", "['A', 'B']", "0.200000", "0.150000", "0.230000", "1.000000",
+        "2", "[2 6]", "['C', 'G']", "0.100000", "0.050000", "0.200000", "1.000000"
+        ]
+    expected_output = ""
+    for ln in lines:
+        line = "\t".join(ln) + os.linesep
+        expected_output += line
+
+    #expected_output = "N\tmapping\ttrans_mapping\ths\thk\tsmap\tsmap_inf" + os.linesep
+    #expected_output += "2\t[0 1]\t['A', 'B']\t0.200000\t0.150000\t0.230000\t1.000000" + os.linesep
+    #expected_output += "2\t[2 6]\t['C', 'G']\t0.100000\t0.050000\t0.200000\t1.000000" + os.linesep
 
     file_content = open(output_filename, "r").read()
 
