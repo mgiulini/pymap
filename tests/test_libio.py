@@ -5,7 +5,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 # import utils modules
-from pymap.libio import (
+from libio import (
     output_mappings,
     system_parameters_setup,
     parse_arguments,

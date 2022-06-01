@@ -3,9 +3,9 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from pymap.libclust import get_clust
+from libclust import get_clust
 
-from pymap.libentropy import (
+from libentropy import (
     calculate_pbar,
     calculate_smap,
     calculate_smap_inf,
