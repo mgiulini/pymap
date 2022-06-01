@@ -1,0 +1,4 @@
+# parameters for testing: existing output
+max_binom 2
+output_filename ./tests/reference_data/parameters_test.dat
+input_filename input.csv

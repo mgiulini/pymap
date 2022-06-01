@@ -1,5 +1,5 @@
 """Setup.py file."""
-from setuptools import setup
+from setuptools import find_packages, setup
 
 setup(
     name='pymap',
@@ -11,6 +11,8 @@ setup(
     author='Marco Giulini',
     author_email='mrcgiulini@gmail.com',
     url='https://github.com/mgiulini/pymap',
+    package_dir={'': 'src'},
+    packages=find_packages('src'),
     include_package_data=True,
     zip_safe=False,
     # Some weblinks

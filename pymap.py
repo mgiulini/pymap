@@ -1,73 +1,67 @@
-import os 
-from pathlib import Path
-import pandas as pd 
-import numpy as np 
-from scipy.special import binom
+"""pymap main file."""
+
 import math
 import time
+
+import numpy as np
+import pandas as pd
+from scipy.special import binom
+
 # local modules
-from libio import (
-    output_mappings,
-    parse_arguments,
-    system_parameters_setup
-)
-from libentropy import (
-    calculate_pbar,
-    calculate_smap,
-    calculate_smap_inf,
-    calculate_entropies,
-)
-from libclust import (
-    check_volume,
-    get_clust,
-)
+from libclust import check_volume, get_clust
+from libentropy import (calculate_entropies, calculate_pbar, calculate_smap,
+                        calculate_smap_inf)
+from libio import output_mappings, parse_arguments, system_parameters_setup
+
 
 def main():
-    """
-    main function
-    """
+    """Define main function."""
     start_time = time.time()
 
     args = parse_arguments()
 
     # read_data
-    cleaned_pars = system_parameters_setup(args.parameters)   
+    cleaned_pars = system_parameters_setup(args.parameters)
 
     with open(cleaned_pars["input_filename"], "r") as f:
         ncols = len(f.readline().split(','))
     print("number of columns in the dataset = ", ncols)
-    
-    df = pd.read_csv(cleaned_pars["input_filename"], sep = ",",usecols=range(1,ncols))
+
+    df = pd.read_csv(
+        cleaned_pars["input_filename"],
+        sep=",",
+        usecols=range(1, ncols)
+    )
     print("df shape", df.shape)
     print("df.columns", df.columns)
     n_at = df.shape[1]
-    
+
     # creating fully detailed mapping
-    print("total number of mappings = ", math.pow(2,n_at) - 1)
+    print("total number of mappings = ", math.pow(2, n_at) - 1)
     at_mapping = np.array(range(n_at))
-    print("df.columns[at_mapping]",df.columns[at_mapping])
+    print("df.columns[at_mapping]", df.columns[at_mapping])
 
     # atomistic clustering: the original dataframe is divided in microstates
-    at_clust = get_clust(df,at_mapping)
-    #at_clust = df.groupby(df.columns.tolist()).size().reset_index().rename(columns={0:'records'})
+    at_clust = get_clust(df, at_mapping)
     print("at_clust", at_clust)
     print("atomistic columns", at_clust.columns)
     print("at_clust shape", at_clust.shape)
-    pr = at_clust["records"]/df.shape[0] # detailed, atomistic probability distribution
+    pr = at_clust["records"]/df.shape[0]  # at. probability distribution
     # check volume
-    V = check_volume(df,ncols)
+    V = check_volume(df, ncols)
 
     # atomistic quantities
     hs_at, hk_at = calculate_entropies(at_clust)
     print("at_clust.columns[at_mapping]", at_clust.columns[at_mapping])
-    print("atomistic resolution ", hs_at) # computing fully atomistic resolution
-    print("atomistic relevance ", hk_at) # computing fully atomistic resolution
-    
+    print("atomistic resolution ", hs_at)  # computing fully at. resolution
+    print("atomistic relevance ", hk_at)  # computing fully at. resolution
+
     cg_mappings = dict()
     cg_mappings_order = []
     # going through the levels of coarse-graining
     for ncg in range(1, n_at+1):
-        print("ncg = ", ncg, ", elapsed time (seconds) = %8.6lf" % (time.time() - start_time))
+        elap_time = time.time() - start_time
+        print("ncg = ", ncg, ", elapsed time (seconds) = %8.6lf" % (elap_time))
         cg_count = int(binom(n_at, ncg))
         print("cg_count", cg_count)
         k = 0
@@ -84,10 +78,29 @@ def main():
                     print("adding key", key, " k = ", k)
                 cg_clust = get_clust(df, mapping)
                 hs, hk = calculate_entropies(cg_clust)
-                smap_inf = calculate_smap_inf(n_at, ncg, hs_at, hs, V)
-                p_bar = calculate_pbar(at_clust, cg_clust, df.shape[0], mapping)
+                smap_inf = calculate_smap_inf(
+                    n_at,
+                    ncg,
+                    hs_at,
+                    hs,
+                    V
+                )
+                p_bar = calculate_pbar(
+                    at_clust,
+                    cg_clust,
+                    df.shape[0],
+                    mapping
+                )
                 smap = calculate_smap(at_clust, mapping, pr, p_bar)
-                cg_mappings[key] = len(mapping), mapping, list(at_clust.columns[mapping]), hs, hk, smap, smap_inf
+                cg_mappings[key] = (
+                    len(mapping),
+                    mapping,
+                    list(at_clust.columns[mapping]),
+                    hs,
+                    hk,
+                    smap,
+                    smap_inf
+                )
                 fixed_n_mappings.append(key)
         fixed_n_mappings.sort()
         # extending the original list
@@ -98,8 +111,8 @@ def main():
         cg_mappings_order,
         cleaned_pars["output_filename"]
     )
-    
     print("Total execution time (seconds) %8.6lf" % (time.time() - start_time))
+
 
 # running main
 main()

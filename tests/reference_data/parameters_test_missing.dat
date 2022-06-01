@@ -1,0 +1,3 @@
+# parameters for testing: missing input
+max_binom 2
+output_filename output.csv

@@ -1,16 +1,12 @@
 """Test the libentropy library."""
 import numpy as np
 import pandas as pd
-import pytest 
+import pytest
 
-from pymap.libclust import get_clust
+from libclust import get_clust
+from libentropy import (calculate_entropies, calculate_pbar, calculate_smap,
+                        calculate_smap_inf)
 
-from pymap.libentropy import (
-    calculate_pbar,
-    calculate_smap,
-    calculate_smap_inf,
-    calculate_entropies,
-)
 
 def test_calculate_pbar():
     """Test correct calculation of pbar."""
@@ -19,8 +15,8 @@ def test_calculate_pbar():
         'b': [4, -1, -1, 4]
         }
     df = pd.DataFrame(full_d)
-    at_mapping = np.array([0,1])
-    at_df = get_clust(df,at_mapping)
+    at_mapping = np.array([0, 1])
+    at_df = get_clust(df, at_mapping)
     nobs = df.shape[0]
     mapping = np.array([0])
     cg_df = get_clust(df, mapping)
@@ -29,10 +25,10 @@ def test_calculate_pbar():
     expected_pbar = {
         "a": [0, 1],
         "omega_1": [1, 2],
-        "p_bar" : [0.25, 0.375]
+        "p_bar": [0.25, 0.375]
         }
     expected_pbar_df = pd.DataFrame(expected_pbar)
-    pbar = calculate_pbar(at_df, cg_df , nobs, mapping)
+    pbar = calculate_pbar(at_df, cg_df, nobs, mapping)
     assert pbar.equals(expected_pbar_df)
 
 
@@ -44,15 +40,15 @@ def test_smap_zero():
             'b': [4, -1, -1, 4]
         }
     )
-    at_mapping = np.array([0,1])
-    at_df = get_clust(df,at_mapping)
+    at_mapping = np.array([0, 1])
+    at_df = get_clust(df, at_mapping)
     pr = at_df["records"]/df.shape[0]
     mapping = np.array([0])
     p_bar = pd.DataFrame(
         {
             "a": [0, 1],
             "omega_1": [2, 2],
-            "p_bar" : [0.5, 0.5]
+            "p_bar": [0.5, 0.5]
         }
     )
     smap = calculate_smap(at_df, mapping, pr, p_bar)
@@ -68,7 +64,8 @@ def test_smap_inf_error():
     nat, ncg = 10, 9
     with pytest.raises(ValueError, match="hs_at (0.0) < hs_cg (1.0)"):
         calculate_smap_inf(nat, ncg, 0.0, 1.0, 2)
-    
+
+
 def test_smap_inf_zero():
     """Test correct calculation of smap_inf."""
     nat, ncg = 2, 1
@@ -79,6 +76,7 @@ def test_smap_inf_zero():
     expected_smap_inf = 0.0
     assert expected_smap_inf == smap_inf
 
+
 def test_hs_hk_error():
     """Test error in calculate_entropies."""
     cg_clust = pd.DataFrame({'a': [0, 1], 'b': [4, -1]})
@@ -86,7 +84,7 @@ def test_hs_hk_error():
     with pytest.raises(ValueError, match=exp_str):
         calculate_entropies(cg_clust)
     cg_clust = pd.DataFrame({'a': [0, 1], 'b': [4, -1], 'records': [1, -1]})
-    exp_str = "'records' column in cg_clust contains negative values"
+    exp_str = "'records' col in cg_clust contains negative values"
     with pytest.raises(ValueError, match=exp_str):
         calculate_entropies(cg_clust)
 
