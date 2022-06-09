@@ -85,13 +85,10 @@ def main():
                     hs,
                     V
                 )
-                p_bar = calculate_pbar(
-                    at_clust,
-                    cg_clust,
-                    df.shape[0],
-                    mapping
-                )
-                smap = calculate_smap(at_clust, mapping, pr, p_bar)
+                #p_bar = calculate_pbar(at_clust, cg_clust, df.shape[0], mapping)
+                p_bar = calculate_pbar_indices(at_clust, cg_clust, df.shape[0], mapping)
+                #smap = calculate_smap(at_clust, mapping, pr, p_bar)
+                smap = calculate_smap_fast(mapping, pr, p_bar)
                 cg_mappings[key] = (
                     len(mapping),
                     mapping,
