@@ -9,7 +9,7 @@ from scipy.special import binom
 
 # local modules
 from libclust import check_volume, get_clust
-from libentropy import (calculate_entropies, calculate_pbar, calculate_smap,
+from libentropy import (calculate_entropies, calculate_pbar, calculate_pbar_indices, calculate_smap, calculate_smap_fast,
                         calculate_smap_inf)
 from libio import output_mappings, parse_arguments, system_parameters_setup
 
