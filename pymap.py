@@ -97,14 +97,9 @@ def main():
         # extending the original list
         cg_mappings_order.extend(fixed_n_mappings)
 
-    # output_mappings(cg_mappings,
-    #                cg_mappings_order,
-    #                cleaned_pars["output_filename"])
-    output_df = pd.DataFrame(cg_mappings.values())
-    output_df.columns = ["N", "mapping", "trans_mapping",
-                         "hs", "hk", "smap", "smap_inf"]
-    output_df.to_csv(cleaned_pars["output_filename"], sep=",",
-                     float_format="%8.6lf")
+    output_mappings(cg_mappings,
+                    cg_mappings_order,
+                    cleaned_pars["output_filename"])
     print("Total execution time (seconds) %8.6lf" % (time.time() - start_time))
 
 
