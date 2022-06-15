@@ -78,15 +78,18 @@ def main():
                     print("adding key", key, " k = ", k)
                 cg_clust = get_clust(df, mapping)
                 hs, hk = calculate_entropies(cg_clust)
-                smap_inf = calculate_smap_inf(n_at, ncg,
+                smap_inf = calculate_smap_inf(n_at,
+                                              ncg,
                                               hs_at,
                                               hs,
                                               V)
-                p_bar = calculate_pbar_indices(at_clust, cg_clust,
+                p_bar = calculate_pbar_indices(at_clust,
+                                               cg_clust,
                                                df.shape[0],
                                                mapping)
                 smap = calculate_smap_fast(mapping, pr, p_bar)
-                cg_mappings[key] = (len(mapping), mapping,
+                cg_mappings[key] = (len(mapping),
+                                    mapping,
                                     list(at_clust.columns[mapping]),
                                     hs,
                                     hk,
