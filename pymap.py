@@ -11,7 +11,7 @@ from scipy.special import binom
 from libclust import check_volume, get_clust
 from libentropy import (calculate_entropies, calculate_pbar_indices,
                         calculate_smap_fast, calculate_smap_inf)
-from libio import parse_arguments, system_parameters_setup
+from libio import output_mappings, parse_arguments, system_parameters_setup
 
 
 def main():
