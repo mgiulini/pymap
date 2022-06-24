@@ -68,4 +68,3 @@ def calculate_smap_fast(mapping, pr, p_bar):
             mapping_entropy.append(pr[n] * np.log(pr[n] / p_bar.iloc[ii, -1]))
     tot_smap = sum(mapping_entropy)
     return tot_smap
-
