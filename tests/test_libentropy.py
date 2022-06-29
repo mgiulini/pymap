@@ -25,6 +25,7 @@ def test_calculate_pbar():
     expected_pbar = {
         "a": [0, 1],
         "omega_1": [1, 2],
+        "index": [(0,), (1, 2)],
         "p_bar": [0.25, 0.375]
         }
     expected_pbar_df = pd.DataFrame(expected_pbar)
@@ -47,11 +48,12 @@ def test_smap_zero():
     p_bar = pd.DataFrame(
         {
             "a": [0, 1],
-            "omega_1": [2, 2],
+            "omega_1": [1, 1],
+            "index": [(0,), (1,)],
             "p_bar": [0.5, 0.5]
         }
     )
-    smap = calculate_smap(at_df, mapping, pr, p_bar)
+    smap = calculate_smap(mapping, pr, p_bar)
     expected_smap = 0.0
     assert expected_smap == smap
 
