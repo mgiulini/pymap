@@ -9,9 +9,9 @@ from scipy.special import binom
 
 # local modules
 from libclust import check_volume, get_clust
-from libentropy import (calculate_entropies, calculate_pbar_indices,
-                        calculate_smap_fast, calculate_smap_inf)
-from libio import parse_arguments, system_parameters_setup
+from libentropy import (calculate_entropies, calculate_pbar, calculate_smap,
+                        calculate_smap_inf)
+from libio import output_mappings, parse_arguments, system_parameters_setup
 
 
 def main():
@@ -78,15 +78,18 @@ def main():
                     print("adding key", key, " k = ", k)
                 cg_clust = get_clust(df, mapping)
                 hs, hk = calculate_entropies(cg_clust)
-                smap_inf = calculate_smap_inf(n_at, ncg,
+                smap_inf = calculate_smap_inf(n_at,
+                                              ncg,
                                               hs_at,
                                               hs,
                                               V)
-                p_bar = calculate_pbar_indices(at_clust, cg_clust,
-                                               df.shape[0],
-                                               mapping)
-                smap = calculate_smap_fast(mapping, pr, p_bar)
-                cg_mappings[key] = (len(mapping), mapping,
+                p_bar = calculate_pbar(at_clust,
+                                       cg_clust,
+                                       df.shape[0],
+                                       mapping)
+                smap = calculate_smap(mapping, pr, p_bar)
+                cg_mappings[key] = (len(mapping),
+                                    mapping,
                                     list(at_clust.columns[mapping]),
                                     hs,
                                     hk,
@@ -97,17 +100,11 @@ def main():
         # extending the original list
         cg_mappings_order.extend(fixed_n_mappings)
 
-    # output_mappings(cg_mappings,
-    #                cg_mappings_order,
-    #                cleaned_pars["output_filename"])
-    output_df = pd.DataFrame(cg_mappings.values())
-    output_df.columns = ["N", "mapping", "trans_mapping",
-                         "hs", "hk", "smap", "smap_inf"]
-    output_df.to_csv(cleaned_pars["output_filename"], sep=",",
-                     float_format="%8.6lf")
+    output_mappings(cg_mappings,
+                    cg_mappings_order,
+                    cleaned_pars["output_filename"])
     print("Total execution time (seconds) %8.6lf" % (time.time() - start_time))
 
 
 # running main
 main()
-
