@@ -20,11 +20,9 @@ def calculate_entropies(cg_clust):
 
 
 def calculate_pbar(at_clust, cg_clust, nobs, mapping):
-    """
-    Calculate smeared pdf pbar.
-    
-    
-    The new implementation saves the indices of the atomistic states that 
+    """Calculate smeared pdf pbar.
+
+    The new implementation saves the indices of the atomistic states that
     map to the same CG configuration.
     """
     new_frame = pd.DataFrame(0, index=np.arange(len(at_clust)),
@@ -73,4 +71,3 @@ def calculate_smap(mapping, pr, p_bar):
             mapping_entropy.append(pr[n] * np.log(pr[n] / p_bar.iloc[ii, -1]))
     tot_smap = sum(mapping_entropy)
     return tot_smap
-
