@@ -69,7 +69,7 @@ tox -e lint
 
 The first command tests the code with a standard python 3.10 environment, while the second checks the code-style.
     
-**6.** open a new Pull-Request on this page, correctly linking the issue. Ask for a review from anyone of the contributors. PS: the Pull Request must pass the continuous integration tests to be accepted.
+**6.** open a new Pull-Request on this page, correctly linking the issue. Ask for a review from anyone of the contributors.
 
 Enjoy!
 
