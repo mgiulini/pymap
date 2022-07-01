@@ -9,8 +9,8 @@ from scipy.special import binom
 
 # local modules
 from libclust import check_volume, get_clust
-from libentropy import (calculate_entropies, calculate_pbar_indices,
-                        calculate_smap_fast, calculate_smap_inf)
+from libentropy import (calculate_entropies, calculate_pbar, calculate_smap,
+                        calculate_smap_inf)
 from libio import output_mappings, parse_arguments, system_parameters_setup
 
 
@@ -83,11 +83,11 @@ def main():
                                               hs_at,
                                               hs,
                                               V)
-                p_bar = calculate_pbar_indices(at_clust,
-                                               cg_clust,
-                                               df.shape[0],
-                                               mapping)
-                smap = calculate_smap_fast(mapping, pr, p_bar)
+                p_bar = calculate_pbar(at_clust,
+                                       cg_clust,
+                                       df.shape[0],
+                                       mapping)
+                smap = calculate_smap(mapping, pr, p_bar)
                 cg_mappings[key] = (len(mapping),
                                     mapping,
                                     list(at_clust.columns[mapping]),
