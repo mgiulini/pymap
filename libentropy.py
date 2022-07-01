@@ -19,9 +19,12 @@ def calculate_entropies(cg_clust):
     return hs, hk
 
 
-def calculate_pbar_indices(at_clust, cg_clust, nobs, mapping):
-    """Calculate smeared pdf pbar."""
-    """Saves indices of the atom config.s that map in the same CG config."""
+def calculate_pbar(at_clust, cg_clust, nobs, mapping):
+    """Calculate smeared pdf pbar.
+
+    The new implementation saves the indices of the atomistic states that
+    map to the same CG configuration.
+    """
     new_frame = pd.DataFrame(0, index=np.arange(len(at_clust)),
                              columns=['omega_1'])
     at_clust = pd.concat([at_clust, new_frame], axis=1)
@@ -58,8 +61,8 @@ def calculate_smap_inf(nat, ncg, hs_at, hs_cg, V):
     return delta_s_conf
 
 
-def calculate_smap_fast(mapping, pr, p_bar):
-    """Faster calculation of smap."""
+def calculate_smap(mapping, pr, p_bar):
+    """Calculate the mapping entropy in its standard definition."""
     # state-wise mapping entropy
     mapping_entropy = []
     indices = p_bar['index']

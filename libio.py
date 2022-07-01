@@ -28,6 +28,7 @@ def check_output_file(cleaned_pars):
     """If the output_filename already exists, block the execution."""
     output_fl = cleaned_pars["output_filename"]
     output_path = Path(output_fl)
+    print(f"checking output path {output_path}")
     if output_path.is_file():
         raise Exception(f"Output file {output_fl} already existing. Aborting")
     return
