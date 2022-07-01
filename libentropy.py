@@ -19,7 +19,7 @@ def calculate_entropies(cg_clust):
     return hs, hk
 
 
-def calculate_pbar(at_clust, cg_clust, nobs, mapping):
+def calculate_pbar_indices(at_clust, cg_clust, nobs, mapping):
     """Calculate smeared pdf pbar."""
     """Saves indices of the atom config.s that map in the same CG config."""
     new_frame = pd.DataFrame(0, index=np.arange(len(at_clust)),
@@ -68,3 +68,4 @@ def calculate_smap(mapping, pr, p_bar):
             mapping_entropy.append(pr[n] * np.log(pr[n] / p_bar.iloc[ii, -1]))
     tot_smap = sum(mapping_entropy)
     return tot_smap
+

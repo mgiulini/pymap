@@ -48,6 +48,31 @@ cd tests
 pytest
 ```
 
+# Contributing
+
+If you like to add a contribution to this open-source project, follow these steps:
+
+**1.** create an issue with a brief explanation of the contribution;
+
+**2.** add a reasonable label to the issue, or create a new one;
+
+**3.** create a new branch *entirely dedicated to this contribution* either on this repo on your fork;
+
+**4.** develop the code
+
+**5.** use *tox* to test the code. In particular, you should run the following commands:
+
+```
+tox -e py310
+tox -e lint  
+``` 
+
+The first command tests the code with a standard python 3.10 environment, while the second checks the code-style.
+    
+**6.** open a new Pull-Request on this page, correctly linking the issue. Ask for a review from anyone of the contributors 
+
+Enjoy!
+
 # Usage
 
 The program must be provided with one single command line argument (-p), namely a (relative) path to a parameter file, containing the parameters to be employed. A list of the accepted parameters is provided here:
