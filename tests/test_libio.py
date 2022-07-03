@@ -7,7 +7,7 @@ import numpy as np
 import pytest
 
 # import utils modules
-from libio import output_mappings, system_parameters_setup
+from src.libio import output_mappings, system_parameters_setup
 
 from . import reference_data
 

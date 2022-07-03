@@ -3,9 +3,9 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from libclust import get_clust
-from libentropy import (calculate_entropies, calculate_pbar, calculate_smap,
-                        calculate_smap_inf)
+from src.libclust import get_clust
+from src.libentropy import (calculate_entropies, calculate_pbar,
+    calculate_smap, calculate_smap_inf)
 
 
 def test_calculate_pbar():
