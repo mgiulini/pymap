@@ -91,7 +91,7 @@ Verbosity can be turned on with the *-v* (*--verbose*) flag.
 In general, running
 
 ```
-python pymap -h
+python src/pymap.py -h
 ```
 
 shows the available command line arguments.
@@ -101,13 +101,13 @@ shows the available command line arguments.
 The first data set described in [this article](https://arxiv.org/abs/2203.00100) contains 20 non-interacting spins. The variables of interest can be calculated with the following command
 
 ```
-python3 pymap.py -p parameters/parameters_spins.dat
+python3 src/pymap.py -p parameters/parameters_spins.dat
 ```
 
 In this context, the mapping space is quite big, and *max_binom* allows one to explore just a portion of it in few minutes: 
 
 ```
-python3 pymap.py -p parameters/parameters_spins_test.dat
+python3 src/pymap.py -p parameters/parameters_spins_test.dat
 ```
 
 ## financial market
@@ -115,11 +115,11 @@ python3 pymap.py -p parameters/parameters_spins_test.dat
 To obtain the full results for the simple model of the Nasdaq stock market reported [here](https://arxiv.org/abs/2203.00100) one can use the following command:
 
 ```
-python3 pymap.py -p parameters/parameters_m1.dat
+python3 src/pymap.py -p parameters/parameters_m1.dat
 ```
 
 and 
 
 ```
-python3 pymap.py -p parameters/parameters_m2.dat
+python3 src/pymap.py -p parameters/parameters_m2.dat
 ```
