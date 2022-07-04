@@ -8,10 +8,11 @@ import pandas as pd
 from scipy.special import binom
 
 # local modules
-from libclust import check_volume, get_clust
-from libentropy import (calculate_entropies, calculate_pbar, calculate_smap,
-                        calculate_smap_inf)
-from libio import output_mappings, parse_arguments, system_parameters_setup
+from libs.libclust import check_volume, get_clust
+from libs.libentropy import (calculate_entropies, calculate_pbar,
+                             calculate_smap, calculate_smap_inf)
+from libs.libio import (output_mappings, parse_arguments,
+                        system_parameters_setup)
 
 
 def main():
