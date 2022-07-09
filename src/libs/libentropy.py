@@ -6,14 +6,14 @@ from scipy.stats import entropy
 
 def calculate_entropies(cg_clust):
     """Calculate resolution and relevance from CG clustering."""
-    if "records" not in cg_clust.columns:
-        raise ValueError("cg_clust does not have a 'records' column")
-    if (cg_clust["records"] < 0).any():
-        raise ValueError("'records' col in cg_clust contains negative values")
+    if "counts" not in cg_clust.columns:
+        raise ValueError("cg_clust does not have a 'counts' column")
+    if (cg_clust["counts"] < 0).any():
+        raise ValueError("'counts' col in cg_clust contains negative values")
     # resolution
-    hs = entropy(cg_clust["records"])
+    hs = entropy(cg_clust["counts"])
     # relevance
-    ks = np.unique(cg_clust["records"], return_counts=True)
+    ks = np.unique(cg_clust["counts"], return_counts=True)
     pk = np.multiply(ks[0], ks[1])
     hk = entropy(pk)
     return hs, hk
@@ -37,7 +37,7 @@ def calculate_pbar(at_clust, cg_clust, nobs, mapping):
             'index': lambda x: tuple(x)
         }
     ).reset_index()
-    p_bar_r = cg_clust["records"]/nobs/omega_1["omega_1"]
+    p_bar_r = cg_clust["counts"]/nobs/omega_1["omega_1"]
     # to keep track of all the cg configurations
     new_p_bar = pd.concat([omega_1, p_bar_r], axis=1)
     new_p_bar.columns = pd.concat(
