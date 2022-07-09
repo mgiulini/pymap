@@ -43,7 +43,7 @@ def test_smap_zero():
     )
     at_mapping = np.array([0, 1])
     at_df = get_clust(df, at_mapping)
-    pr = at_df["records"]/df.shape[0]
+    pr = at_df["counts"]/df.shape[0]
     mapping = np.array([0])
     p_bar = pd.DataFrame(
         {
@@ -82,18 +82,18 @@ def test_smap_inf_zero():
 def test_hs_hk_error():
     """Test error in calculate_entropies."""
     cg_clust = pd.DataFrame({'a': [0, 1], 'b': [4, -1]})
-    exp_str = "cg_clust does not have a 'records' column"
+    exp_str = "cg_clust does not have a 'counts' column"
     with pytest.raises(ValueError, match=exp_str):
         calculate_entropies(cg_clust)
-    cg_clust = pd.DataFrame({'a': [0, 1], 'b': [4, -1], 'records': [1, -1]})
-    exp_str = "'records' col in cg_clust contains negative values"
+    cg_clust = pd.DataFrame({'a': [0, 1], 'b': [4, -1], 'counts': [1, -1]})
+    exp_str = "'counts' col in cg_clust contains negative values"
     with pytest.raises(ValueError, match=exp_str):
         calculate_entropies(cg_clust)
 
 
 def test_hs_hk():
     """Test correct calculation of hs and hk."""
-    cg_clust = pd.DataFrame({'a': [0, 1], 'b': [4, -1], 'records': [1, 1]})
+    cg_clust = pd.DataFrame({'a': [0, 1], 'b': [4, -1], 'counts': [1, 1]})
     hs, hk = calculate_entropies(cg_clust)
     exp_hs = np.log(2)
     exp_hk = 0.0
