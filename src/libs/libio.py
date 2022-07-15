@@ -3,10 +3,12 @@ import argparse
 import os
 from pathlib import Path
 
+TASKS = ["measure", "optimize"]
 
 def parse_arguments():
     """Parse and check the command-line arguments."""
     parser = argparse.ArgumentParser()
+    parser.add_argument("-t", "--task", help="task to be executed")
     parser.add_argument("-p", "--parameters", help="dat input parameter file")
     parser.add_argument(
         "-v",
@@ -17,6 +19,10 @@ def parse_arguments():
     args = parser.parse_args()
     print(args.__dict__)
     # checks
+    if not args.task:
+        raise Exception("Task is mandatory")
+    if args.task not in TASKS:
+        raise Exception(f"Invalid task, should be in {' '.join(TASKS)}")
     if not args.parameters:
         raise Exception("Parameter file is mandatory")
     if args.verbose:
@@ -34,11 +40,11 @@ def check_output_file(cleaned_pars):
     return
 
 
-def system_parameters_setup(parfile):
+def system_parameters_setup(parfile, task):
     """Set up the parameters."""
     pars = read_parfile(parfile)
     check_mandatory_parameters(pars)
-    cleaned_pars = check_optional_parameters(pars)
+    cleaned_pars = check_optional_parameters(pars, task)
     print(f"Cleaned Parameters {cleaned_pars}")
     check_output_file(cleaned_pars)
     return cleaned_pars
@@ -80,21 +86,32 @@ def check_mandatory_parameters(parameters):
     return
 
 
-def check_optional_parameters(parameters):
-    """Check the existence of optional parameters. Set to default if absent."""
+def check_optional_parameters(parameters, task):
+    """
+    
+    Check the existence of task-specific optional parameters. 
+    
+    Set to default if absent.
+    """
     optional_keys = {
-        "max_binom": ["integer", 100000],
+        "measure" : {"max_binom": ["integer", 100000]},
+        "optimize" : {
+            "nsteps" : ["integer", 100],
+            "ncg" : ["integer", 1] # default (not so useful) choice is 1
+        }
     }
 
     observed_pars = parameters.keys()
 
-    for optk in optional_keys.keys():
+    for optk in optional_keys[task].keys():
         if optk not in observed_pars:
-            parameters[optk] = optional_keys[optk][1]
+            # paramater not present. set to default
+            parameters[optk] = optional_keys[task][optk][1]
         else:
-            if optional_keys[optk][0] == "integer":
+            # parameter is present, convert to the desired type
+            if optional_keys[task][optk][0] == "integer":
                 parameters[optk] = int(parameters[optk])
-            if optional_keys[optk][0] == "float":
+            if optional_keys[task][optk][0] == "float":
                 parameters[optk] = float(parameters[optk])
     return parameters
 
