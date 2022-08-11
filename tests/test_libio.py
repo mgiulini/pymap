@@ -7,16 +7,20 @@ import numpy as np
 import pytest
 
 # import utils modules
-from src.libs.libio import output_mappings, system_parameters_setup
+from src.libs.libio import system_parameters_setup
 
 from . import reference_data
 
 
 @pytest.fixture
-def example_parfile():
+def example_parfile_measure():
     """Parameter file."""
-    return Path(reference_data, "parameters_test.dat")
+    return Path(reference_data, "parameters_test_measure.dat")
 
+@pytest.fixture
+def example_parfile_optimize():
+    """Parameter file for task optimize."""
+    return Path(reference_data, "parameters_test_optimize.dat")
 
 @pytest.fixture
 def example_missing_parfile():
@@ -36,20 +40,7 @@ def example_existing_output_parfile():
     return Path(reference_data, "parameters_test_existing_output.dat")
 
 
-@pytest.fixture
-def example_mappings():
-    """Provide mapping dictionary and corresponding order."""
-    cg_mappings = {}
-    cg_mappings["mapping_dict"] = {
-        (2, 6): (2, np.array([2, 6]), ["C", "G"], 0.1, 0.05, 0.2, 1.0),
-        (0, 1): (2, np.array([0, 1]), ["A", "B"], 0.2, 0.15, 0.23, 1.0)
-        }
-
-    cg_mappings["mapping_order"] = [(0, 1), (2, 6)]
-    return cg_mappings
-
-
-def test_parameter_file(example_parfile):
+def test_parameter_file_measure(example_parfile_measure):
     """Test correct functioning of system_parameter_setup."""
     expected_output_dict = {
         "input_filename": "input.csv",
@@ -57,53 +48,36 @@ def test_parameter_file(example_parfile):
         "max_binom": 2
     }
 
-    observed_pars_dict = system_parameters_setup(example_parfile)
+    observed_pars_dict = system_parameters_setup(example_parfile_measure,"measure")
 
     assert observed_pars_dict == expected_output_dict
 
+def test_parameter_file_optimize(example_parfile_optimize):
+    expected_output_dict = {
+        "input_filename": "input.csv",
+        "output_filename": "output.csv",
+        "nsteps": 42,
+        "ncg": 1
+    }
+
+    observed_pars_dict = system_parameters_setup(example_parfile_optimize,"optimize")
+
+    assert observed_pars_dict == expected_output_dict
+    
 
 def test_missing_parameter_file(example_missing_parfile):
     """Check error if parameter file is missing."""
     with pytest.raises(Exception):
-        system_parameters_setup(example_missing_parfile)
+        system_parameters_setup(example_missing_parfile,"measure")
 
 
 def test_incomplete_parameter_file(example_incomplete_parfile):
     """Check error if parameter file is missing."""
     with pytest.raises(Exception):
-        system_parameters_setup(example_missing_parfile)
+        system_parameters_setup(example_incomplete_parfile,"measure")
 
 
 def test_existing_output(example_existing_output_parfile):
     """Check error if output filename already exists."""
     with pytest.raises(Exception):
-        system_parameters_setup(example_existing_output_parfile)
-
-
-def test_output_format(example_mappings):
-    """Check if the output format is the expected one."""
-    output_filename = "test_output.csv"
-    output_mappings(
-        example_mappings["mapping_dict"],
-        example_mappings["mapping_order"],
-        output_filename
-        )
-    # building expected output
-    lines = [
-            ["N", "mapping", "trans_mapping", "hs",
-                "hk", "smap", "smap_inf"],
-            ["2", "[0 1]", "['A', 'B']", "0.200000",
-                "0.150000", "0.230000", "1.000000"],
-            ["2", "[2 6]", "['C', 'G']", "0.100000",
-                "0.050000", "0.200000", "1.000000"]
-        ]
-    expected_output = ""
-    for ln in lines:
-        line = "\t".join(ln) + os.linesep
-        expected_output += line
-
-    file_content = open(output_filename, "r").read()
-
-    assert file_content == expected_output
-
-    os.unlink(output_filename)
+        system_parameters_setup(example_existing_output_parfile, "measure")
