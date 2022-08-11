@@ -8,12 +8,11 @@ import pandas as pd
 
 # local modules
 from libs.libclust import check_volume, get_clust
-from libs.libentropy import (calculate_entropies, calculate_pbar,
-                             calculate_smap, calculate_smap_inf)
-from libs.libio import (parse_arguments,
-                        system_parameters_setup)
-from optimize import OPTIMIZE
+from libs.libentropy import calculate_entropies
+from libs.libio import parse_arguments, system_parameters_setup
 from measure import MEASURE
+from optimize import OPTIMIZE
+
 
 def main():
     """Define main function."""

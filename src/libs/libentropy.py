@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 from scipy.stats import entropy
 
+
 def calculate_entropies(cg_clust):
     """Calculate resolution and relevance from CG clustering."""
     if "counts" not in cg_clust.columns:

@@ -2,8 +2,12 @@ import numpy as np
 import pandas as pd
 
 from libs.libclust import get_clust
-from libs.libentropy import (calculate_entropies, calculate_pbar,
-                             calculate_smap, calculate_smap_inf)
+from libs.libentropy import (
+    calculate_entropies,
+    calculate_pbar,
+    calculate_smap,
+    calculate_smap_inf,
+)
 
 
 class OPTIMIZE:
@@ -47,13 +51,9 @@ class OPTIMIZE:
         self.atom_nnret = np.nonzero(self.mapping == 0)[0]
         print(f"atom_nnret {self.atom_nnret}")
 
-
-    def convert_mapping(self):
-        print("conv_mapping: ",np.nonzero(self.mapping)[0])
-
     def make_a_move(self):
         """
-        routine that creates a new mapping by changing a site
+        Routine that creates a new mapping by changing a site.
         """
         at1_idx = np.random.randint(0,self.ncg)
         at1 = self.atom_ret[at1_idx]
@@ -69,7 +69,7 @@ class OPTIMIZE:
         return at1,at2
 
     def metropolis(self, smap, smap_prime):
-        """routine that applies the Metropolis rule."""
+        """Routine that applies the Metropolis rule."""
         print(f"smap {smap:.6f} vs smap_prime {smap_prime:.6f}")
         if (smap_prime < smap):
             print("move accepted")
@@ -88,7 +88,7 @@ class OPTIMIZE:
         return accepted
 
     def calculate_observables(self, df):
-        """calculates the observables."""
+        """Routine that calculates the observables."""
         cg_clust = get_clust(df, self.atom_ret)
         hs, hk = calculate_entropies(cg_clust)
         smap_inf = calculate_smap_inf(self.n_at,
@@ -116,7 +116,7 @@ class OPTIMIZE:
                         )
 
     def output_mappings(self, output_filename):
-        """output self.cg_mappings to the desired output filename."""
+        """Output self.cg_mappings to the desired output filename."""
         output_df = pd.DataFrame(self.cg_mappings)
         output_df.columns = ["N","mapping","trans_mapping","hs","hk","smap","smap_inf"]
         output_df.to_csv(output_filename, sep = "\t", float_format="%.6f", index=None)
@@ -128,7 +128,7 @@ class OPTIMIZE:
         hs,hk,smap,smap_inf = self.calculate_observables(df)
         self.append_quantities(hs,hk,smap,smap_inf)
         print("beginning optimization")
-        for n in range(self.nsteps):
+        for _n in range(self.nsteps):
             at1, at2 = self.make_a_move()
             hs_prime,hk_prime,smap_prime,smap_inf_prime = self.calculate_observables(df)
             accepted = self.metropolis(smap, smap_prime)
