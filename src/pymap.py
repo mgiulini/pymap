@@ -13,7 +13,7 @@ from libs.libentropy import (calculate_entropies, calculate_pbar,
                              calculate_smap, calculate_smap_inf)
 from libs.libio import (output_mappings, parse_arguments,
                         system_parameters_setup)
-from optimize import optimize
+from optimize import OPTIMIZE
 
 def main():
     """Define main function."""
@@ -103,11 +103,21 @@ def main():
             cg_mappings_order.extend(fixed_n_mappings)
 
     elif args.task == "optimize":
-        cg_mappings, cg_mappings_order = optimize(df, cleaned_pars, n_at, hs_at, V, at_clust, pr)
+        optimize_obj = OPTIMIZE(
+                    n_at,
+                    cleaned_pars["ncg"],
+                    at_clust,
+                    hs_at,
+                    V,
+                    pr,
+                    cleaned_pars["nsteps"]
+                    )
+        optimize_obj.run(df)
+        optimize_obj.output_mappings(cleaned_pars["output_filename"])
 
-    output_mappings(cg_mappings,
-                    cg_mappings_order,
-                    cleaned_pars["output_filename"])
+    #output_mappings(cg_mappings,
+    #                cg_mappings_order,
+    #                cleaned_pars["output_filename"])
     print("Total execution time (seconds) %8.6lf" % (time.time() - start_time))
 
 
