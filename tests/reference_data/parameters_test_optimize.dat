@@ -1,0 +1,4 @@
+# parameters for testing
+output_filename output.csv
+input_filename input.csv
+nsteps 42
