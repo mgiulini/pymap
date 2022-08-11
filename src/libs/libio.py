@@ -114,31 +114,3 @@ def check_optional_parameters(parameters, task):
             if optional_keys[task][optk][0] == "float":
                 parameters[optk] = float(parameters[optk])
     return parameters
-
-
-def output_mappings(mapping_dict, mapping_order, output_filename):
-    """
-    Functions that outputs the mappings to a file.
-
-    Parameters
-    ----------
-    mapping_dict : dict
-        dictionary of mappings
-
-    mapping_order : list
-        list of ordered mappings
-
-    output_filename : str
-    """
-    header = "N\tmapping\ttrans_mapping\ths\thk\tsmap\tsmap_inf" + os.linesep
-    with open(output_filename, "w") as wfile:
-        # write header
-        wfile.write(header)
-        for ord_map in mapping_order:
-            output_str = []
-            for elem in mapping_dict[ord_map]:
-                if isinstance(elem, float):
-                    output_str.append(f"{elem:.6f}")
-                else:
-                    output_str.append(f"{elem}")
-            wfile.write("\t".join(output_str) + os.linesep)

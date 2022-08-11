@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from libs.libclust import check_volume, get_clust
+from libs.libclust import get_clust
 from libs.libentropy import (calculate_entropies, calculate_pbar,
                              calculate_smap, calculate_smap_inf)
 
@@ -27,7 +27,6 @@ class OPTIMIZE:
         identificator : str
         """
         self.cg_mappings = []
-        self.cg_mappings_order = []
         self.n_at = n_at
         self.ncg = ncg
         self.at_clust = at_clust
@@ -120,7 +119,7 @@ class OPTIMIZE:
         """output self.cg_mappings to the desired output filename."""
         output_df = pd.DataFrame(self.cg_mappings)
         output_df.columns = ["N","mapping","trans_mapping","hs","hk","smap","smap_inf"]
-        output_df.to_csv(output_filename, sep = "\t", float_format="%.6f")
+        output_df.to_csv(output_filename, sep = "\t", float_format="%.6f", index=None)
 
 
     def run(self, df):
