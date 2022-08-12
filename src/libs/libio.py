@@ -4,6 +4,7 @@ from pathlib import Path
 
 TASKS = ["measure", "optimize"]
 
+
 def parse_arguments():
     """Parse and check the command-line arguments."""
     parser = argparse.ArgumentParser()
@@ -88,13 +89,14 @@ def check_mandatory_parameters(parameters):
 def check_optional_parameters(parameters, task):
     """
     Check the existence of task-specific optional parameters.
+
     Set to default if absent.
     """
     optional_keys = {
-        "measure" : {"max_binom": ["integer", 100000]},
-        "optimize" : {
-            "nsteps" : ["integer", 100],
-            "ncg" : ["integer", 1] # default (not so useful) choice is 1
+        "measure": {"max_binom": ["integer", 100000]},
+        "optimize": {
+            "nsteps": ["integer", 100],
+            "ncg": ["integer", 1]  # default (not so useful) choice is 1
         }
     }
 
