@@ -71,3 +71,19 @@ def calculate_smap(mapping, pr, p_bar):
             mapping_entropy.append(pr[n] * np.log(pr[n] / p_bar.iloc[ii, -1]))
     tot_smap = sum(mapping_entropy)
     return tot_smap
+
+# def calculate_observables(df, at_clust, mapping):
+#    """Calculate all the needed observables."""
+#    # calculating stuff
+#    cg_clust = get_clust(df, mapping)
+#    hs_prime, hk_prime = calculate_entropies(cg_clust)
+#    smap_inf_prime = calculate_smap_inf(n_at,
+#                                  len(mapping)],
+#                                  hs_at,
+#                                  hs_prime,
+#                                  V)
+#    p_bar_prime = calculate_pbar(at_clust,
+#                               cg_clust,
+#                               df.shape[0],
+#                               mapping)
+#    smap_prime = calculate_smap(mapping, pr, p_bar_prime)
