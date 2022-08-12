@@ -75,16 +75,18 @@ Enjoy!
 
 # Usage
 
-The program must be provided with one single command line argument (-p), namely a (relative) path to a parameter file, containing the parameters to be employed. A list of the accepted parameters is provided here:
+The program must be provided with two command line arguments, namely a task (**-t**) among *measure* and *optimize* and a relative path to a parameter file (**-p**), containing the parameters to be employed. A list of the accepted parameters is provided here:
 
 | Parameter | Description | Type | Mandatory |
 | ----------- | ----------- | ---- | ------- |
 | *input_filename* | relative path to the input data | str | yes |
 | *output_filename* | relative path to the desired output file | str | yes |
-| *max_binom* *| max number of mappings that must be generated for each degree of coarse-graining | int | no |
+| *max_binom* | max number of mappings that must be generated for each degree of coarse-graining | int | no |
+| *nsteps* | number of simulated annealing steps in the optimisation | int | no |
+| *ncg* | number of degrees of freedom to be used in the optimisation | int | no |
 
 
-*The default choice is to generate all the coarse-grained mappings for each *N*, a task that becomes prohibitive when *n > 15*. 
+For task measure, *the default choice is to generate all the coarse-grained mappings for each *N*, a prescription that becomes prohibitive when *n > 15*.
 
 Verbosity can be turned on with the *-v* (*--verbose*) flag.
 
@@ -101,13 +103,13 @@ shows the available command line arguments.
 The first data set described in [this article](https://arxiv.org/abs/2203.00100) contains 20 non-interacting spins. The variables of interest can be calculated with the following command
 
 ```
-python3 src/pymap.py -p parameters/parameters_spins.dat
+python3 src/pymap.py -p parameters/parameters_spins.dat -t measure
 ```
 
 In this context, the mapping space is quite big, and *max_binom* allows one to explore just a portion of it in few minutes: 
 
 ```
-python3 src/pymap.py -p parameters/parameters_spins_test.dat
+python3 src/pymap.py -p parameters/parameters_spins_test.dat -t measure
 ```
 
 ## financial market
@@ -115,11 +117,11 @@ python3 src/pymap.py -p parameters/parameters_spins_test.dat
 To obtain the full results for the simple model of the Nasdaq stock market reported [here](https://arxiv.org/abs/2203.00100) one can use the following command:
 
 ```
-python3 src/pymap.py -p parameters/parameters_m1.dat
+python3 src/pymap.py -p parameters/parameters_m1.dat -t measure
 ```
 
 and 
 
 ```
-python3 src/pymap.py -p parameters/parameters_m2.dat
+python3 src/pymap.py -p parameters/parameters_m2.dat -t measure
 ```
