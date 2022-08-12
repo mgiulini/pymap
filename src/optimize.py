@@ -138,8 +138,8 @@ class OPTIMIZE:
                 self.append_quantities(hs,hk,smap,smap_inf)
             else:
                 # revert move
-                self.mapping[at1]=1
-                self.mapping[at2]=0
+                self.mapping[at1] = 1
+                self.mapping[at2] = 0
                 self.atom_ret[-1] = at1
                 self.atom_nnret[-1] = at2
             print(f"self.atom_ret {self.atom_ret}")
