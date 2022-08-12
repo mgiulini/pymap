@@ -53,32 +53,32 @@ def main():
     # atomistic quantities
     hs_at, hk_at = calculate_entropies(at_clust)
     print("at_clust.columns[at_mapping]", at_clust.columns[at_mapping])
-    print(f"atomistic resolution {hs_at:.6f}")  # computing fully at. resolution
-    print(f"atomistic relevance {hk_at:.6f}")  # computing fully at. resolution
+    print(f"atomistic resolution {hs_at:.6f}")  # compute fully at. resolution
+    print(f"atomistic relevance {hk_at:.6f}")  # compute fully at. resolution
 
     if args.task == "measure":
         measure_obj = MEASURE(
-                    n_at = n_at,
-                    at_clust = at_clust,
-                    hs_at = hs_at,
-                    V = V,
-                    pr = pr,
-                    at_mapping = at_mapping,
-                    max_binom = cleaned_pars["max_binom"],
-                    args = args
+                    n_at=n_at,
+                    at_clust=at_clust,
+                    hs_at=hs_at,
+                    V=V,
+                    pr=pr,
+                    at_mapping=at_mapping,
+                    max_binom=cleaned_pars["max_binom"],
+                    args=args
         )
         measure_obj.run(df)
         measure_obj.output_mappings(cleaned_pars["output_filename"])
 
     elif args.task == "optimize":
         optimize_obj = OPTIMIZE(
-                    n_at,
-                    cleaned_pars["ncg"],
-                    at_clust,
-                    hs_at,
-                    V,
-                    pr,
-                    cleaned_pars["nsteps"]
+                    n_at=n_at,
+                    ncg=cleaned_pars["ncg"],
+                    at_clust=at_clust,
+                    hs_at=hs_at,
+                    V=V,
+                    pr=pr,
+                    nsteps=cleaned_pars["nsteps"]
                     )
         optimize_obj.run(df)
         optimize_obj.output_mappings(cleaned_pars["output_filename"])

@@ -11,14 +11,16 @@ from . import reference_data
 
 
 @pytest.fixture
-def example_parfile_measure():
+def parfile_measure():
     """Parameter file."""
     return Path(reference_data, "parameters_test_measure.dat")
 
+
 @pytest.fixture
-def example_parfile_optimize():
+def parfile_optimize():
     """Parameter file for task optimize."""
     return Path(reference_data, "parameters_test_optimize.dat")
+
 
 @pytest.fixture
 def example_missing_parfile():
@@ -38,19 +40,21 @@ def example_existing_output_parfile():
     return Path(reference_data, "parameters_test_existing_output.dat")
 
 
-def test_parameter_file_measure(example_parfile_measure):
-    """Test correct functioning of system_parameter_setup."""
+def test_parameter_file_measure(parfile_measure):
+    """Test correct functioning of system_parameter_setup for task measure."""
     expected_output_dict = {
         "input_filename": "input.csv",
         "output_filename": "output.csv",
         "max_binom": 2
     }
 
-    observed_pars_dict = system_parameters_setup(example_parfile_measure,"measure")
+    obs_pars_dict = system_parameters_setup(parfile_measure, "measure")
 
-    assert observed_pars_dict == expected_output_dict
+    assert obs_pars_dict == expected_output_dict
 
-def test_parameter_file_optimize(example_parfile_optimize):
+
+def test_parameter_file_optimize(parfile_optimize):
+    """Test correct functioning of system_parameter_setup for task optimize."""
     expected_output_dict = {
         "input_filename": "input.csv",
         "output_filename": "output.csv",
@@ -58,21 +62,21 @@ def test_parameter_file_optimize(example_parfile_optimize):
         "ncg": 1
     }
 
-    observed_pars_dict = system_parameters_setup(example_parfile_optimize,"optimize")
+    obs_pars_dict = system_parameters_setup(parfile_optimize, "optimize")
 
-    assert observed_pars_dict == expected_output_dict
-    
+    assert obs_pars_dict == expected_output_dict
+
 
 def test_missing_parameter_file(example_missing_parfile):
     """Check error if parameter file is missing."""
     with pytest.raises(Exception):
-        system_parameters_setup(example_missing_parfile,"measure")
+        system_parameters_setup(example_missing_parfile, "measure")
 
 
 def test_incomplete_parameter_file(example_incomplete_parfile):
     """Check error if parameter file is missing."""
     with pytest.raises(Exception):
-        system_parameters_setup(example_incomplete_parfile,"measure")
+        system_parameters_setup(example_incomplete_parfile, "measure")
 
 
 def test_existing_output(example_existing_output_parfile):

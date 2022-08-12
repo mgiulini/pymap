@@ -1,3 +1,4 @@
+"""task measure file."""
 import os
 import time
 
@@ -5,12 +6,8 @@ import numpy as np
 from scipy.special import binom
 
 from libs.libclust import get_clust
-from libs.libentropy import (
-    calculate_entropies,
-    calculate_pbar,
-    calculate_smap,
-    calculate_smap_inf,
-)
+from libs.libentropy import (calculate_entropies, calculate_pbar,
+                             calculate_smap, calculate_smap_inf)
 
 
 class MEASURE:
@@ -27,6 +24,7 @@ class MEASURE:
             at_mapping,
             args,
             ):
+        """Initialize module."""
         self.cg_mappings = dict()
         self.cg_mappings_order = []
         self.n_at = n_at
@@ -54,7 +52,8 @@ class MEASURE:
 
         output_filename : str
         """
-        header = "N\tmapping\ttrans_mapping\ths\thk\tsmap\tsmap_inf" + os.linesep
+        header = "N\tmapping\ttrans_mapping\ths\thk\tsmap\tsmap_inf"
+        header += os.linesep
         with open(output_filename, "w") as wfile:
             # write header
             wfile.write(header)
@@ -68,6 +67,7 @@ class MEASURE:
                 wfile.write("\t".join(output_str) + os.linesep)
 
     def run(self, df):
+        """Run measure module."""
         for ncg in range(1, self.n_at+1):
             cg_count = int(binom(self.n_at, ncg))
             print("cg_count", cg_count)
@@ -86,22 +86,23 @@ class MEASURE:
                     cg_clust = get_clust(df, mapping)
                     hs, hk = calculate_entropies(cg_clust)
                     smap_inf = calculate_smap_inf(self.n_at,
-                                                 ncg,
-                                                 self.hs_at,
-                                                 hs,
-                                                 self.V)
+                                                  ncg,
+                                                  self.hs_at,
+                                                  hs,
+                                                  self.V)
                     p_bar = calculate_pbar(self.at_clust,
-                                          cg_clust,
-                                          df.shape[0],
-                                          mapping)
+                                           cg_clust,
+                                           df.shape[0],
+                                           mapping)
                     smap = calculate_smap(mapping, self.pr, p_bar)
+                    trans_mapping = list(self.at_clust.columns[mapping])
                     self.cg_mappings[key] = (len(mapping),
-                                       mapping,
-                                       list(self.at_clust.columns[mapping]),
-                                       hs,
-                                       hk,
-                                       smap,
-                                       smap_inf)
+                                             mapping,
+                                             trans_mapping,
+                                             hs,
+                                             hk,
+                                             smap,
+                                             smap_inf)
                     fixed_n_mappings.append(key)
             fixed_n_mappings.sort()
             # extending the original list

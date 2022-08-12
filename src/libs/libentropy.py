@@ -72,7 +72,7 @@ def calculate_smap(mapping, pr, p_bar):
     tot_smap = sum(mapping_entropy)
     return tot_smap
 
-#def calculate_observables(df, at_clust, mapping):
+# def calculate_observables(df, at_clust, mapping):
 #    """Calculate all the needed observables."""
 #    # calculating stuff
 #    cg_clust = get_clust(df, mapping)

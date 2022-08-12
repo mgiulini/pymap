@@ -1,4 +1,5 @@
-#from src.measure import MEASURE
+"""Test the measure task."""
+# from src.measure import MEASURE
 import numpy as np
 import pytest
 
@@ -18,29 +19,4 @@ def example_mappings():
 
 def test_output_format(example_mappings):
     """Check if the output format is the expected one."""
-    # output_filename = "test_output.csv"
-    # output_mappings(
-        # example_mappings["mapping_dict"],
-        # example_mappings["mapping_order"],
-        # output_filename
-        # )
-    #building expected output
-    # lines = [
-            # ["N", "mapping", "trans_mapping", "hs",
-                # "hk", "smap", "smap_inf"],
-            # ["2", "[0 1]", "['A', 'B']", "0.200000",
-                # "0.150000", "0.230000", "1.000000"],
-            # ["2", "[2 6]", "['C', 'G']", "0.100000",
-                # "0.050000", "0.200000", "1.000000"]
-        # ]
-    # expected_output = ""
-    # for ln in lines:
-        # line = "\t".join(ln) + os.linesep
-        # expected_output += line
-# 
-    # file_content = open(output_filename, "r").read()
-# 
-    # assert file_content == expected_output
-# 
-    # os.unlink(output_filename)
     assert True
