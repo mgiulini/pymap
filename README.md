@@ -16,7 +16,7 @@ and the relevance:
 
 where K is the set of unique frequencies observed in the sample.
 
-If you use pymap please cite [this paper](https://arxiv.org/abs/2203.00100).
+If you use pymap please cite [this paper](https://journals.aps.org/pre/abstract/10.1103/PhysRevE.106.044101).
 
 
 # Setup
@@ -100,7 +100,7 @@ shows the available command line arguments.
 
 ## non-interacting spin system
 
-The first data set described in [this article](https://arxiv.org/abs/2203.00100) contains 20 non-interacting spins. The variables of interest can be calculated with the following command
+The first data set described in [this article](https://journals.aps.org/pre/abstract/10.1103/PhysRevE.106.044101) contains 20 non-interacting spins. The variables of interest can be calculated with the following command
 
 ```
 python3 src/pymap.py -p parameters/parameters_spins.dat -t measure
@@ -114,7 +114,7 @@ python3 src/pymap.py -p parameters/parameters_spins_test.dat -t measure
 
 ## financial market
 
-To obtain the full results for the simple model of the Nasdaq stock market reported [here](https://arxiv.org/abs/2203.00100) one can use the following command:
+To obtain the full results for the simple model of the Nasdaq stock market reported [here](https://journals.aps.org/pre/abstract/10.1103/PhysRevE.106.044101) one can use the following command:
 
 ```
 python3 src/pymap.py -p parameters/parameters_m1.dat -t measure
